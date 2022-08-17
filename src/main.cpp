@@ -5,8 +5,8 @@
 
 #include "shader.h"
 
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT 900
+#define SCREEN_WIDTH 462 
+#define SCREEN_HEIGHT 260 
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -99,10 +99,8 @@ int main() {
 
         myShader.use();
         float iTime = glfwGetTime();
-        myShader.setFloat("iTime", iTime);
+        myShader.setFloat("global.iTime", iTime);
     
-        std::cout << "iTime -> " << iTime << std::endl; 
-
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);   
 

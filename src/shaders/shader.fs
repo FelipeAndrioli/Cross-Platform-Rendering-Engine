@@ -1,12 +1,22 @@
 #version 400 core
 
-in vec2 fragCoord;
+struct Global {
+    float iTime;
+};
 
+uniform Global global;
+uniform vec3 iResolution;
+
+in vec2 fragCoord;
 out vec4 fragColor;
 
-uniform in vec3 iResolution;
-uniform in float iTime;
-
 void main() {
-    fragColor = vec4(cos(iTime), sin(iTime), 0., 1.);
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = gl_FragCoord.xy/iResolution.xy;
+
+    // Time varying pixel color
+    vec3 col = 0.5 + 0.5*cos(global.iTime+uv.xyx+vec3(0,2,4));
+
+    // Output to screen
+    fragColor = vec4(col,1.0);
 }
