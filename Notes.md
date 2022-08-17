@@ -1,5 +1,11 @@
 # Notes about the project
 
+## Release goals
+
+- Render Modes
+    - [x] ShaderToy similar shader rendering
+    - [ ] Physically based rendering
+
 - I've decided that the engine will also have multiple config status like
 physically based rendering, custom rendering and shader rendering (like shader
 toy). This kind of only involves major configurations which can be abstracted
