@@ -6,7 +6,6 @@ Cross Graphic APIs.
 - Windows
     - OpenGL
     - Vulkan
-    - DirectX
 
 - Unix 
     - OpenGL
@@ -19,10 +18,6 @@ Operational System. Everything else is handled by the code and build process.
 ## Features
 
 ### Basic features
-
-    - Renderer
-    - Camera
-    - 3D model loaded
 
 ### In Progress 
 
