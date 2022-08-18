@@ -1,12 +1,13 @@
 #include <iostream>
+#include <filesystem>
 
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
-#include "shader.h"
+#include "../include/shader.h"
 
-#define SCREEN_WIDTH 462 
-#define SCREEN_HEIGHT 260 
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600 
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -46,9 +47,8 @@ int main() {
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSetWindowPos(window, 100, 100);
 
-    const char *vert_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/shader.vs";
-    
-    const char *frag_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/shader.fs";
+    const char *vert_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/pixel_rendering.vs";
+    const char *frag_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/pixel_rendering.fs";
 
     Shader myShader = Shader(vert_shader, frag_shader, nullptr);
 
