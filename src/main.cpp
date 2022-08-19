@@ -6,6 +6,10 @@
 
 #include "../include/shader.h"
 
+#include "../libs/imgui/imgui.h"
+#include "../libs/imgui/imgui_impl_glfw.h"
+#include "../libs/imgui/imgui_impl_opengl3.h"
+
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600 
 
@@ -22,8 +26,8 @@ void processInput(GLFWwindow *window) {
 int main() {
   
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
    
     GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, 
@@ -91,11 +95,30 @@ int main() {
     myShader.use();
     myShader.setVec3("iResolution", iResolution);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO(); 
+    (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    float clear_color_r = 0.0f;
+
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         //glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         
         processInput(window);
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::Begin("Configurations");
+        ImGui::SliderFloat("Clear color R", &clear_color_r, 0.000f, 1.000f);
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         myShader.use();
         float iTime = glfwGetTime();
@@ -107,7 +130,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+ 
     myShader.end();
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
