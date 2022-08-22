@@ -1,25 +1,46 @@
 #include <iostream>
-#include <filesystem>
+#include <windows.h>
 
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
-
-#include "../include/shader.h"
 
 #include "../libs/imgui/imgui.h"
 #include "../libs/imgui/imgui_impl_glfw.h"
 #include "../libs/imgui/imgui_impl_opengl3.h"
 
+#include "../include/shader.h"
+
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600 
+#define KEY_PRESS_DELAY 100
+
+bool CONFIG_MODE = false;
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+void setConfigMode(GLFWwindow *window) {
+    CONFIG_MODE = !CONFIG_MODE;
+    std::string state = (CONFIG_MODE) ? "enabled" : "disabled";
+    std::cout << "Config mode " << state << std::endl;
+
+    if (CONFIG_MODE) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+
+    Sleep(KEY_PRESS_DELAY);
+}
+
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+        setConfigMode(window); 
     }
 }
 
@@ -78,17 +99,15 @@ int main() {
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT,  GL_FALSE, 3 * sizeof(float), 
-            (void*)0); 
-    glEnableVertexAttribArray(0);
-
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, 
-            GL_STATIC_DRAW);
+        GL_STATIC_DRAW);
 
+    glVertexAttribPointer(0, 3, GL_FLOAT,  GL_FALSE, 3 * sizeof(float), (void*)0); 
+    glEnableVertexAttribArray(0);
+    
     glBindVertexArray(0);
 
     glm::vec3 iResolution = glm::vec3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
@@ -106,31 +125,39 @@ int main() {
     float clear_color_r = 0.0f;
 
     while (!glfwWindowShouldClose(window)) {
+
+        float iTime = glfwGetTime();
         glClear(GL_COLOR_BUFFER_BIT);
-        //glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+        glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         
         processInput(window);
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        ImGui::Begin("Configurations");
-        ImGui::SliderFloat("Clear color R", &clear_color_r, 0.000f, 1.000f);
-        ImGui::End();
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         myShader.use();
-        float iTime = glfwGetTime();
         myShader.setFloat("global.iTime", iTime);
-    
+  
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);   
+
+        if (CONFIG_MODE) {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            ImGui::Begin("Configurations");
+            ImGui::SliderFloat("Clear color R", &clear_color_r, 0.000f, 1.000f);
+            ImGui::End();
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
- 
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     myShader.end();
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
