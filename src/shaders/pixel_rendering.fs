@@ -1,4 +1,4 @@
-#version 330 core
+#version 440 core
 
 struct Global {
     float iTime;
