@@ -1,11 +1,16 @@
 #include <iostream>
 
-#include "../include/global.h"
+#include "state.h"
 
-Global global = Global();
+State state;
+
+void update() {
+    state.tick++;
+    std::cout << "Tick -> " << state.tick << std::endl;
+}
 
 int main() {
-    Window m_window = Window("Application.exe", 800, 600);
-    global.m_window = m_window;
-    m_window.window_loop();
+    Window m_window = Window(update);
+    state.window = &m_window;
+    state.window->main_loop();
 }

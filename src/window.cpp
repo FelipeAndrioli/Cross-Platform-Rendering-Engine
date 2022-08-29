@@ -12,14 +12,14 @@ Window::Window() {
 
 }
 
-Window::Window(const char *t_window_name, int t_window_width, int t_window_height) {
+Window::Window(void(*update)()) {
     glfw_context_version_minor = 4;
     glfw_context_version_major = 4;
     opengl_profile = GLFW_OPENGL_CORE_PROFILE;
 
-    window_name = t_window_name;
-    window_width = t_window_width;
-    window_height = t_window_height;
+    window_name = "Rendering Engine.exe";
+    window_width = 800;
+    window_height = 600;
     window_create();
 }
 
@@ -61,7 +61,7 @@ void Window::processInput() {
     } 
 }
 
-void Window::window_loop() {
+void Window::main_loop() {
     while(!glfwWindowShouldClose(m_window)) {
 
         glClear(GL_COLOR_BUFFER_BIT);
