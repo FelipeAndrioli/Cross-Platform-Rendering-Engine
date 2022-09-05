@@ -6,5 +6,6 @@
 class State {
     public:
         Window *window;
+        UI *ui;
         int tick;
 };

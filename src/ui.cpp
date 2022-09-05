@@ -1,12 +1,12 @@
 #include "../include/ui.h"
 
-UI::UI(GLFWwindow *window) {
+UI::UI(Window *window) {
     IMGUI_CHECKVERSION();
-    imgui_context = ImGui::CreateContext();
+    ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window->m_window, true);
     ImGui_ImplOpenGL3_Init("#version 440");
 }
 
@@ -15,7 +15,6 @@ UI::~UI() {
 }
 
 void UI::onUpdate() {
-    ImGui::SetCurrentContext(imgui_context);
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -26,6 +25,10 @@ void UI::onUpdate() {
         std::cout << "Hello there!" << std::endl;  
     }
 
+    ImGui::SliderFloat("Clear Color R", r, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color G", g, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color B", b, 0.0f, 1.0f);
+
     ImGui::End();
 
     ImGui::Render();
@@ -33,7 +36,6 @@ void UI::onUpdate() {
 }
 
 void UI::onDestroy() {
-    ImGui::SetCurrentContext(imgui_context);
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
