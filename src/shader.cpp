@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+Shader::Shader() {
+
+}
+
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShaderPath = nullptr) {
     std::string vertexShaderCode;
     std::string fragmentShaderCode;

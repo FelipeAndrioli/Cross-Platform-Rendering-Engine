@@ -5,7 +5,8 @@
 State state;
 
 void init () {
-    state.renderer = new Renderer();
+    state.scene = new Scene();
+    state.renderer = new Renderer(state.scene);
     state.ui = new UI(state.window);
 
     state.ui->window_clear_color_r = &state.window->clear_color_r;
@@ -21,7 +22,8 @@ void tick() {
 }
 
 void update() {
-    state.renderer->update(state.current_time); 
+    state.renderer->update(state.scene, state.current_time); 
+    state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
     //std::cout << "Tick -> " << state.tick++ << std::endl;
 

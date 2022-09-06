@@ -22,6 +22,7 @@
 
  class Shader {
     public:
+        Shader();
         Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShaderPath);
         unsigned int ID;
         void use();
