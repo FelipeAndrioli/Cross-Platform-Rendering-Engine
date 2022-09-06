@@ -25,9 +25,9 @@ void UI::onUpdate() {
         std::cout << "Hello there!" << std::endl;  
     }
 
-    ImGui::SliderFloat("Clear Color R", r, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color G", g, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color B", b, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color R", window_clear_color_r, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color G", window_clear_color_g, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color B", window_clear_color_b, 0.0f, 1.0f);
 
     ImGui::End();
 

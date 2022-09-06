@@ -75,7 +75,6 @@ void Window::main_loop() {
     while(!glfwWindowShouldClose(m_window)) {
 
         glClear(GL_COLOR_BUFFER_BIT);
-        //glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClearColor(clear_color_r, clear_color_g, clear_color_b, 1.0f);
 
         m_update();

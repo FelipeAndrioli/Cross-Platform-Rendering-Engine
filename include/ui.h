@@ -14,9 +14,9 @@ class UI {
         UI(Window *window);
         ~UI();
         void onUpdate();
-        float *r;
-        float *g;
-        float *b;
+        float *window_clear_color_r;
+        float *window_clear_color_g;
+        float *window_clear_color_b;
     private:
         ImGuiContext *imgui_context;
         void onCreate();
