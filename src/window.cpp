@@ -56,7 +56,6 @@ void Window::window_create() {
         return;
     }
 
-
     glViewport(0, 0, window_width, window_height);
     glfwSetWindowPos(m_window, 100, 100);
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);

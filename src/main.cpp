@@ -16,6 +16,10 @@ void init () {
     state.frames = 0;
 }
 
+void tick() {
+    std::cout << "Ticking..." << std::endl;
+}
+
 void update() {
     state.renderer->update(state.current_time); 
     state.ui->onUpdate(); 
@@ -26,14 +30,10 @@ void update() {
 
     if (state.current_time - state.last_time >= 1.0f) {
         printf("%f ms/frame\n", 1000.0 / static_cast<double>(state.frames));
+        printf("%f frame/s\n", state.frames / 1.0);
         state.frames = 0;
         state.last_time += 1.0;
     }
-}
-
-void tick() {
-
-
 }
 
 int main() {
