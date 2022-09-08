@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../include/shader.h"
+#include "../src/scenes/pixel_rendering.h"
 
 class Scene {
     public:

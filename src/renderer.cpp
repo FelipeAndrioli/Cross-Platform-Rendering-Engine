@@ -32,5 +32,6 @@ void Renderer::draw(Scene *CurrentScene) {
     CurrentScene->SceneShader->use();
     glBindVertexArray(VAO);
 
-    glDrawElements(GL_TRIANGLES, sizeof(CurrentScene->indices.size()), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, sizeof(CurrentScene->indices.size()), 
+        GL_UNSIGNED_INT, 0);
 }
