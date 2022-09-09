@@ -14,14 +14,13 @@
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
 #include "mesh.h"
-#include "texture.h"
 
 class Model {
     public:
         Model(const char *path);
         ~Model();
         std::vector<Mesh> meshes;
-        std::vector<Texture> loaded_textures;
+        std::vector<Texture> textures_loaded;
         std::string directory;
         bool gamma_correction;
         void Draw(Shader &shader);
