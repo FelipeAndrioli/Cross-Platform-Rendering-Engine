@@ -29,15 +29,15 @@ class Window {
         int window_height;
         const char *window_name;
         void window_create();
-        void window_destroy();
         void processInput();
         void_function m_init;
         void_function m_update;
+        void_function m_destroy;
         static void framebuffer_size_callback(GLFWwindow *t_window, int width, 
             int height);
     public:
         Window();
-        Window(void(*init)(), void(*update)());
+        Window(void(*init)(), void(*update)(), void(*destroy)());
         ~Window();
         void main_loop();
         void resize(int new_width, int new_height);

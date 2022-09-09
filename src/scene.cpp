@@ -7,3 +7,7 @@ Scene::Scene() {
     vertices = PixelRendering::scene_vertices;
     indices = PixelRendering::scene_indices;
 }
+
+Scene::~Scene() {
+    std::cout << "Destroying Scene..." << std::endl;
+}

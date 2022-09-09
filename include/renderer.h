@@ -13,6 +13,7 @@
 class Renderer {
     public:
         Renderer(Scene *CurrentScene);
+        ~Renderer();
         void draw(Scene *CurrentScene);
         void update(Scene *CurrentScene, float time);
     private:

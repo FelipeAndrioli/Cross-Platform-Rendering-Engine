@@ -12,7 +12,7 @@ Window::Window() {
 
 }
 
-Window::Window(void(*_init)(), void(*_update)()) {
+Window::Window(void(*_init)(), void(*_update)(), void(*_destroy)()) {
     glfw_context_version_minor = 4;
     glfw_context_version_major = 4;
     opengl_profile = GLFW_OPENGL_CORE_PROFILE;
@@ -27,10 +27,14 @@ Window::Window(void(*_init)(), void(*_update)()) {
 
     m_update = _update;
     m_init = _init;
+    m_destroy = _destroy;
 }
 
 Window::~Window() {
-    window_destroy();
+    std::cout << "Destroying Window..." << std::endl;
+    m_destroy();
+    glfwTerminate();
+    return;
 }
 
 void Window::window_create() {
@@ -82,11 +86,6 @@ void Window::main_loop() {
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
-}
-
-void Window::window_destroy() {
-    glfwTerminate();
-    return;
 }
 
 void Window::resize(int new_width, int new_height) {

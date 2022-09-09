@@ -38,8 +38,15 @@ void update() {
     }
 }
 
+void destroy() {
+    delete state.scene;
+    delete state.renderer;
+    delete state.ui;
+    delete state.window;
+}
+
 int main() {
-    state.window = new Window(init, update);
+    state.window = new Window(init, update, destroy);
     state.window->main_loop();
 
     return 0;

@@ -12,6 +12,7 @@ UI::UI(Window *window) {
 
 UI::~UI() {
     onDestroy();
+    std::cout << "Destroying UI..." << std::endl;
 }
 
 void UI::onUpdate() {

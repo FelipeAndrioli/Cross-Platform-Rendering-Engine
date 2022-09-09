@@ -19,6 +19,10 @@ Renderer::Renderer(Scene *CurrentScene) {
     glEnableVertexAttribArray(0);
 }
 
+Renderer::~Renderer() {
+    std::cout << "Destroying Renderer..." << std::endl;
+}
+
 void Renderer::update(Scene *CurrentScene, float time) {
 
     glm::vec3 res = glm::vec3(800, 600, 0);
