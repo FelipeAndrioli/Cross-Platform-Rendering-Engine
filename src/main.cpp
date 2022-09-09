@@ -5,7 +5,7 @@
 State state;
 
 void init () {
-    state.scene = new Scene();
+    state.scene = new Scene(PIXEL);
     state.renderer = new Renderer(state.scene);
     state.ui = new UI(state.window);
 
