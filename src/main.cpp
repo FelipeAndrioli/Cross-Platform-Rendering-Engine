@@ -5,7 +5,7 @@
 State state;
 
 void init () {
-    state.scene = new Scene(PIXEL);
+    state.scene = new Scene(SCENE);
     state.renderer = new Renderer(state.scene);
     state.ui = new UI(state.window);
 
@@ -25,7 +25,7 @@ void update() {
     state.renderer->update(state.scene, state.current_time); 
     state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
-    //std::cout << "Tick -> " << state.tick++ << std::endl;
+    state.scene->draw();
 
     state.current_time = glfwGetTime();
     state.frames++;
