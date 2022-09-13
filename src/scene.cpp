@@ -37,9 +37,6 @@ Scene::Scene(RenderingType rendering_type) {
 
 void Scene::draw() {
     for (int i = 0; i < 1; i++) {
-        backpack_shader->setMat4("projection", projection);
-        backpack_shader->setMat4("view", view);
-        backpack_shader->setMat4("model", model);
         models[i].Draw(shaders[i]);
     }
 }

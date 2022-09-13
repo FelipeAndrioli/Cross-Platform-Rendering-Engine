@@ -8,12 +8,14 @@
 #include "../libs/assimp/include/assimp/scene.h"
 #include "../libs/assimp/include/assimp/postprocess.h"
 
-#include "stb_image.h"
-
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
 #include "mesh.h"
+
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 class Model {
     public:

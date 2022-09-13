@@ -199,7 +199,7 @@ unsigned int Model::TextureFromFile(const char *path, const std::string
     int nrComponents;
 
     unsigned char *data = stbi_load(filename.c_str(), &width, &height, 
-            &nrComponents, 0);
+        &nrComponents, 0);
 
     if (data) {
         GLenum format;
@@ -225,6 +225,8 @@ unsigned int Model::TextureFromFile(const char *path, const std::string
         stbi_image_free(data);
     } else {
         std::cout << "Texture failed to load at path: " << path << std::endl;
+        fprintf(stderr, "Cannot load file image %s\nSTB Reason: %s\n", 
+            filename.c_str(), stbi_failure_reason());
         stbi_image_free(data);
     }
 
