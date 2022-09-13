@@ -25,6 +25,7 @@ void update() {
     state.renderer->update(state.scene, state.current_time); 
     state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
+    state.scene->update();
     state.scene->draw();
 
     state.current_time = glfwGetTime();

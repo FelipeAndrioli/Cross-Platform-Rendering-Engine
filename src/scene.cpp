@@ -24,14 +24,23 @@ Scene::Scene(RenderingType rendering_type) {
 
         models.push_back(*backpack_model);
         shaders.push_back(*backpack_shader);
+    }
+}
 
+void Scene::update() {
+    for (int i = 0; i < shaders.size(); i++) {
+        shaders[i].use();
         glm::mat4 projection = glm::perspective(90.0f, (float)800/(float)600, 0.1f, 100.0f);
         glm::mat4 view = glm::mat4(1.0f);
+        
+        shaders[i].setMat4("projection", projection);
+        shaders[i].setMat4("view", view);
+      
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
-        backpack_shader->setMat4("projection", projection);
-        backpack_shader->setMat4("view", view);
-        backpack_shader->setMat4("model", model);
+        shaders[i].setMat4("model", model);
     }
 }
 

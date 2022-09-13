@@ -22,6 +22,7 @@ class Scene {
         Scene(RenderingType rendering_type);
         ~Scene();
         void draw();
+        void update();
         std::vector<Model> models;
         std::vector<Shader> shaders;
 
