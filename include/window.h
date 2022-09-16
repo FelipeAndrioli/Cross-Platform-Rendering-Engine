@@ -38,6 +38,8 @@ class Window {
             int height);
         static void key_callback(GLFWwindow *t_window, int key, int scancode, 
             int action, int mods);
+        static void cursor_position_callback(GLFWwindow *t_window, double x_pos, 
+            double y_pos);
     public:
         Window();
         Window(void(*init)(), void(*update)(), void(*destroy)());

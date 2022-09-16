@@ -1,6 +1,7 @@
 #include "../include/window.h"
 
-void Window::framebuffer_size_callback(GLFWwindow *t_window, int width, int height) {
+void Window::framebuffer_size_callback(GLFWwindow *t_window, int width, 
+    int height) {
     // TODO
     // need to change the values of the window propertys as well
     glViewport(0, 0, width, height);
@@ -29,6 +30,12 @@ void Window::key_callback(GLFWwindow *t_window, int key, int scancode, int actio
         default:
             break;
     }
+}
+
+void Window::cursor_position_callback(GLFWwindow *t_window, double x_pos, 
+    double y_pos) {
+    
+    std::cout << "x pos -> " << x_pos << " y pos -> " << y_pos << std::endl; 
 }
 
 Window::Window() {
@@ -91,6 +98,7 @@ void Window::window_create() {
     glfwSetWindowPos(m_window, 100, 100);
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     glfwSetKeyCallback(m_window, key_callback);
+    glfwSetCursorPosCallback(m_window, cursor_position_callback);
     m_init();
 }
 
