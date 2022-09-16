@@ -9,6 +9,7 @@
 
 #include "../include/shader.h"
 #include "../include/model.h"
+#include "../include/camera.h"
 
 #include "../src/scenes/pixel_rendering.h"
 
@@ -22,7 +23,7 @@ class Scene {
         Scene(RenderingType rendering_type);
         ~Scene();
         void draw();
-        void update();
+        void update(Camera *TheCamera);
         std::vector<Model> models;
         std::vector<Shader> shaders;
 

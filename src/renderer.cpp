@@ -1,5 +1,10 @@
 #include "../include/renderer.h"
 
+Renderer::Renderer() {
+
+    TheCamera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+}
+
 Renderer::Renderer(Scene *CurrentScene) {
 
     glGenVertexArrays(1, &VAO);
@@ -23,19 +28,38 @@ Renderer::~Renderer() {
     std::cout << "Destroying Renderer..." << std::endl;
 }
 
-void Renderer::update(Scene *CurrentScene, float time) {
+void Renderer::update(Scene *CurrentScene, Keyboard keyboard, float delta_time,
+    float time) {
 
     glm::vec3 res = glm::vec3(800, 600, 0);
 
     CurrentScene->SceneShader->setFloat("global.iTime", time);
     CurrentScene->SceneShader->setVec3("iResolution", res);
+
+    glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
+    glEnable(GL_DEPTH_TEST);
+
+    if (keyboard.keys[GLFW_KEY_W].pressed) 
+        TheCamera->processKeyboard(FORWARD, delta_time);
+    
+    if (keyboard.keys[GLFW_KEY_S].pressed) 
+        TheCamera->processKeyboard(BACKWARD, delta_time);
+    
+    if (keyboard.keys[GLFW_KEY_A].pressed) 
+        TheCamera->processKeyboard(LEFT, delta_time);
+    
+    if (keyboard.keys[GLFW_KEY_D].pressed)  
+        TheCamera->processKeyboard(RIGHT, delta_time);
 }
 
 void Renderer::draw(Scene *CurrentScene) {
-   
+ 
+    CurrentScene->draw();
+    /*
     CurrentScene->SceneShader->use();
     glBindVertexArray(VAO);
 
     glDrawElements(GL_TRIANGLES, sizeof(CurrentScene->indices.size()), 
         GL_UNSIGNED_INT, 0);
+    */
 }

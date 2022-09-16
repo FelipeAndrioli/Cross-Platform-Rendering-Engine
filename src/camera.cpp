@@ -1,18 +1,27 @@
 #include "../include/camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) {
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) :
+    Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), 
+    MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
+
     std::cout << "Initializing camera..." << std::endl;
     
     Position = position;
-    Up = up;
+    WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
-    
+
     updateCameraVectors();
 }
 
 Camera::~Camera() {
     std::cout << "Destroying camera..." << std::endl;
+}
+
+void Camera::showVector(const char *id, glm::vec3 vec) {
+    // Debug purposes
+    std::cout << id << " " << "x -> " << vec.x << " y -> " << vec.y << " z -> " 
+        << vec.z << std::endl;
 }
 
 glm::mat4 Camera::getViewMatrix() {
@@ -25,7 +34,7 @@ void Camera::processKeyboard(Camera_Movement direction, float delta_time) {
     if (direction == FORWARD) {
         Position += Front * velocity;  
     }
-    
+        
     if (direction == BACKWARD) {
         Position -= Front * velocity;
     }
@@ -57,7 +66,6 @@ void Camera::processMouseMovement(float x_offset, float y_offset,
             Pitch = -89.0f;
         }
     }
-
     updateCameraVectors();
 }
 
@@ -71,6 +79,7 @@ void Camera::processMouseScroll(float y_offset) {
     if (Zoom > 45.0f) {
         Zoom = 45.0f;
     }
+    updateCameraVectors();
 }
 
 void Camera::updateCameraVectors() {
@@ -87,7 +96,7 @@ void Camera::updateCameraVectors() {
 glm::mat4 Camera::lookAt(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp) {
     glm::vec3 z_axis = glm::normalize(position - target);
     glm::vec3 x_axis = glm::normalize(glm::cross(glm::normalize(worldUp), z_axis));
-    glm::vec3 y_axis = glm::normalize(glm::cross(z_axis, x_axis));
+    glm::vec3 y_axis = glm::cross(z_axis, x_axis);
 
     glm::mat4 translation = glm::mat4(1.0f);
     translation[3][0] = -position.x; 
@@ -105,6 +114,6 @@ glm::mat4 Camera::lookAt(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp
     rotation[1][2] = z_axis.y;
     rotation[2][2] = z_axis.z;
 
-    return translation * rotation;
+    return rotation * translation;
 }
 

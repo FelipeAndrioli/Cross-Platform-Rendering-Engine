@@ -10,6 +10,8 @@
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
+#include "../src/util/keyboard.h"
+
 /* TODO
  *
  * - Fix framebuffer_size_callback function
@@ -29,12 +31,13 @@ class Window {
         int window_height;
         const char *window_name;
         void window_create();
-        void processInput();
         void_function m_init;
         void_function m_update;
         void_function m_destroy;
         static void framebuffer_size_callback(GLFWwindow *t_window, int width, 
             int height);
+        static void key_callback(GLFWwindow *t_window, int key, int scancode, 
+            int action, int mods);
     public:
         Window();
         Window(void(*init)(), void(*update)(), void(*destroy)());
@@ -44,5 +47,7 @@ class Window {
         GLFWwindow *m_window;
         float clear_color_r; 
         float clear_color_g; 
-        float clear_color_b; 
+        float clear_color_b;
+
+        inline static Keyboard keyboard;
 };

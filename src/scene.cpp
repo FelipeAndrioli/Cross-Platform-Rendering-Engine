@@ -27,12 +27,13 @@ Scene::Scene(RenderingType rendering_type) {
     }
 }
 
-void Scene::update() {
+void Scene::update(Camera *TheCamera) {
     for (int i = 0; i < shaders.size(); i++) {
         shaders[i].use();
-        glm::mat4 projection = glm::perspective(90.0f, (float)800/(float)600, 0.1f, 100.0f);
-        glm::mat4 view = glm::mat4(1.0f);
-        
+        glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
+            (float)800/(float)600, 0.1f, 100.0f);
+        glm::mat4 view = TheCamera->getViewMatrix();
+
         shaders[i].setMat4("projection", projection);
         shaders[i].setMat4("view", view);
       

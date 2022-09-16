@@ -11,8 +11,10 @@ class State {
         Renderer *renderer;
         UI *ui;
         Scene *scene;
-        double last_time;
-        double current_time;
+
+        float last_time;
+        float current_time;
+        float delta_time;
         int tick;
         int frames;
 };
