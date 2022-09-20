@@ -28,13 +28,16 @@ Renderer::~Renderer() {
     std::cout << "Destroying Renderer..." << std::endl;
 }
 
-void Renderer::update(Scene *CurrentScene, Keyboard keyboard, float delta_time,
-    float time) {
+void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse mouse,
+    float delta_time, float time) {
 
     glm::vec3 res = glm::vec3(800, 600, 0);
 
     CurrentScene->SceneShader->setFloat("global.iTime", time);
     CurrentScene->SceneShader->setVec3("iResolution", res);
+
+    if (mouse.on_screen == GLFW_TRUE)
+        std::cout << "Mouse x -> " << mouse.x << " Mouse y -> " << mouse.y << std::endl;
 
     glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
     glEnable(GL_DEPTH_TEST);

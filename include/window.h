@@ -11,6 +11,7 @@
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
 #include "../src/util/keyboard.h"
+#include "../src/util/mouse.h"
 
 /* TODO
  *
@@ -40,6 +41,7 @@ class Window {
             int action, int mods);
         static void cursor_position_callback(GLFWwindow *t_window, double x_pos, 
             double y_pos);
+        static void cursor_enter_callback(GLFWwindow *t_window, int entered);
     public:
         Window();
         Window(void(*init)(), void(*update)(), void(*destroy)());
@@ -52,4 +54,5 @@ class Window {
         float clear_color_b;
 
         inline static Keyboard keyboard;
+        inline static Mouse mouse;
 };

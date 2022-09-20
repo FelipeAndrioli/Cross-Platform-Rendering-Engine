@@ -9,6 +9,7 @@
 
 #include "../src/util/camera_movement.h"
 #include "../src/util/keyboard.h"
+#include "../src/util/mouse.h"
 
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
@@ -20,8 +21,8 @@ class Renderer {
         Renderer(Scene *CurrentScene);
         ~Renderer();
         void draw(Scene *CurrentScene);
-        void update(Scene *CurrentScene, Keyboard keyboard, float delta_time, 
-            float time);
+        void update(Scene *CurrentScene, Keyboard keyboard, Mouse mouse, 
+            float delta_time, float time);
         Camera *TheCamera;
     private:
         Scene *TheScene;

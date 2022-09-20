@@ -9,8 +9,8 @@ void Window::framebuffer_size_callback(GLFWwindow *t_window, int width,
     std::cout << "Width -> " << width << " Height -> " << height << std::endl;
 }
 
-void Window::key_callback(GLFWwindow *t_window, int key, int scancode, int action, 
-    int mods) {
+void Window::key_callback(GLFWwindow *t_window, int key, int scancode, 
+    int action, int mods) {
   
     if (key < 0) {
         return;
@@ -34,8 +34,17 @@ void Window::key_callback(GLFWwindow *t_window, int key, int scancode, int actio
 
 void Window::cursor_position_callback(GLFWwindow *t_window, double x_pos, 
     double y_pos) {
-    
-    std::cout << "x pos -> " << x_pos << " y pos -> " << y_pos << std::endl; 
+
+    mouse.x = x_pos;
+    mouse.y = y_pos;
+}
+
+void Window::cursor_enter_callback(GLFWwindow *t_window, int entered) {
+    if (entered == GLFW_TRUE) 
+        mouse.on_screen = GLFW_TRUE; 
+
+    if (entered == GLFW_FALSE) 
+        mouse.on_screen = GLFW_FALSE; 
 }
 
 Window::Window() {
@@ -46,6 +55,11 @@ Window::Window(void(*_init)(), void(*_update)(), void(*_destroy)()) {
     glfw_context_version_minor = 4;
     glfw_context_version_major = 4;
     opengl_profile = GLFW_OPENGL_CORE_PROFILE;
+
+    mouse.x = 0.0f;
+    mouse.y = 0.0f;
+    mouse.z = 0.0f;
+    mouse.on_screen = GLFW_FALSE;
 
     window_name = "Rendering Engine.exe";
     window_width = 800;
@@ -99,6 +113,7 @@ void Window::window_create() {
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     glfwSetKeyCallback(m_window, key_callback);
     glfwSetCursorPosCallback(m_window, cursor_position_callback);
+    glfwSetCursorEnterCallback(m_window, cursor_enter_callback);
     m_init();
 }
 

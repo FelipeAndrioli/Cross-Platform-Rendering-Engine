@@ -23,8 +23,8 @@ void tick() {
 }
 
 void update() {
-    state.renderer->update(state.scene, state.window->keyboard, state.delta_time,
-        state.current_time); 
+    state.renderer->update(state.scene, state.window->keyboard, state.window->mouse,
+        state.delta_time, state.current_time); 
     state.scene->update(state.renderer->TheCamera);
     state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
