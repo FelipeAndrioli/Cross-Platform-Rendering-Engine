@@ -50,7 +50,7 @@ void Camera::processKeyboard(Camera_Movement direction, float delta_time) {
 
 void Camera::processMouseMovement(float x_offset, float y_offset, 
     bool constrain_pitch) {
-  
+ 
     x_offset *= MouseSensitivity;
     y_offset *= MouseSensitivity;
    

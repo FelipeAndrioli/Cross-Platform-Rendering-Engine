@@ -54,5 +54,5 @@ class Window {
         float clear_color_b;
 
         inline static Keyboard keyboard;
-        inline static Mouse mouse;
+        inline static Mouse *mouse;
 };

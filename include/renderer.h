@@ -21,7 +21,7 @@ class Renderer {
         Renderer(Scene *CurrentScene);
         ~Renderer();
         void draw(Scene *CurrentScene);
-        void update(Scene *CurrentScene, Keyboard keyboard, Mouse mouse, 
+        void update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse, 
             float delta_time, float time);
         Camera *TheCamera;
     private:

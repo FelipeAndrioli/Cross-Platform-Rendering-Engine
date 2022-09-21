@@ -35,16 +35,16 @@ void Window::key_callback(GLFWwindow *t_window, int key, int scancode,
 void Window::cursor_position_callback(GLFWwindow *t_window, double x_pos, 
     double y_pos) {
 
-    mouse.x = x_pos;
-    mouse.y = y_pos;
+    mouse->x = x_pos;
+    mouse->y = y_pos;
 }
 
 void Window::cursor_enter_callback(GLFWwindow *t_window, int entered) {
     if (entered == GLFW_TRUE) 
-        mouse.on_screen = GLFW_TRUE; 
+        mouse->on_screen = GLFW_TRUE; 
 
     if (entered == GLFW_FALSE) 
-        mouse.on_screen = GLFW_FALSE; 
+        mouse->on_screen = GLFW_FALSE; 
 }
 
 Window::Window() {
@@ -56,15 +56,19 @@ Window::Window(void(*_init)(), void(*_update)(), void(*_destroy)()) {
     glfw_context_version_major = 4;
     opengl_profile = GLFW_OPENGL_CORE_PROFILE;
 
-    mouse.x = 0.0f;
-    mouse.y = 0.0f;
-    mouse.z = 0.0f;
-    mouse.on_screen = GLFW_FALSE;
-
     window_name = "Rendering Engine.exe";
     window_width = 800;
     window_height = 600;
   
+    mouse = new Mouse();
+    mouse->x = 0.0f;
+    mouse->y = 0.0f;
+    mouse->z = 0.0f;
+    mouse->last_x = window_width / 2.0f;
+    mouse->last_y = window_height / 2.0f;
+    mouse->on_screen = GLFW_FALSE;
+    mouse->first_mouse = true;
+    
     clear_color_r = 0.5f;
     clear_color_g = 0.5f;
     clear_color_b = 0.5f;
@@ -114,6 +118,8 @@ void Window::window_create() {
     glfwSetKeyCallback(m_window, key_callback);
     glfwSetCursorPosCallback(m_window, cursor_position_callback);
     glfwSetCursorEnterCallback(m_window, cursor_enter_callback);
+
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     m_init();
 }
 

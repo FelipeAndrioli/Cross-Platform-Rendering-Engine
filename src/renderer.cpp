@@ -6,7 +6,6 @@ Renderer::Renderer() {
 }
 
 Renderer::Renderer(Scene *CurrentScene) {
-
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -28,7 +27,7 @@ Renderer::~Renderer() {
     std::cout << "Destroying Renderer..." << std::endl;
 }
 
-void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse mouse,
+void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
     float delta_time, float time) {
 
     glm::vec3 res = glm::vec3(800, 600, 0);
@@ -36,8 +35,24 @@ void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse mouse,
     CurrentScene->SceneShader->setFloat("global.iTime", time);
     CurrentScene->SceneShader->setVec3("iResolution", res);
 
-    if (mouse.on_screen == GLFW_TRUE)
-        std::cout << "Mouse x -> " << mouse.x << " Mouse y -> " << mouse.y << std::endl;
+    if (mouse->on_screen == GLFW_TRUE) {
+        float new_x = static_cast<float>(mouse->x);
+        float new_y = static_cast<float>(mouse->y);
+
+        if (mouse->first_mouse) {
+            mouse->last_x = new_x; 
+            mouse->last_y = new_y; 
+            mouse->first_mouse = false;
+        }
+
+        float x_offset = mouse->x - mouse->last_x;
+        float y_offset = mouse->last_y - mouse->y;
+
+        mouse->last_x = mouse->x;
+        mouse->last_y = mouse->y;
+
+        TheCamera->processMouseMovement(x_offset, y_offset);        
+    } 
 
     glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
     glEnable(GL_DEPTH_TEST);
