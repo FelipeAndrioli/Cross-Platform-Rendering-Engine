@@ -12,11 +12,12 @@
         - Fast Reload (Optional)
         - Backup Shader (Optional)
     - Physically Based Rendering
-        - [IN PROGRESS] 3D Model Loading (ASSIMP for now)
+        - [DONE] 3D Model Loading (ASSIMP for now)
         - Light
-        - Camera
+        - [DONE] Camera
 
-## IN PROGRESS WORK
+## Known Issues/TODOs
 
-- Engine architecture enhancement
-- Load 3D Models
+[] - Time (FPS, FPM, Delta time)
+[] - Refactoring
+
