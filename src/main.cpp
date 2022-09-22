@@ -5,7 +5,9 @@
 State state;
 
 void init () {
-    state.scene = new Scene(SCENE);
+    state.config_mode = false;
+    state.rendering_type = SCENE;
+    state.scene = new Scene(state.rendering_type);
     //state.renderer = new Renderer(state.scene);
     state.renderer = new Renderer();
     state.ui = new UI(state.window);
@@ -23,8 +25,14 @@ void tick() {
 }
 
 void update() {
-    state.renderer->update(state.scene, state.window->keyboard, state.window->mouse, 
-        state.delta_time, state.current_time); 
+    state.renderer->update(
+        state.scene, 
+        state.window->keyboard, 
+        state.window->mouse, 
+        state.delta_time, 
+        state.current_time
+    );
+
     state.scene->update(state.renderer->TheCamera);
     state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
@@ -34,6 +42,17 @@ void update() {
     state.delta_time = state.current_time - state.last_time;
     state.frames++;
     state.last_time = state.current_time;
+
+    if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
+        state.config_mode = !state.config_mode;
+    }
+
+    if (state.config_mode) {
+        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        state.window->mouse->first_mouse = true;
+    } else {
+        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
 
     /*
     if (state.current_time - state.last_time >= 1.0f) {

@@ -5,6 +5,8 @@
 #include "../include/renderer.h"
 #include "../include/scene.h"
 
+#include "./util/rendering_type.h"
+
 class State {
     public:
         Window *window;
@@ -15,6 +17,11 @@ class State {
         float last_time;
         float current_time;
         float delta_time;
+
         int tick;
         int frames;
+
+        bool config_mode;
+
+        RenderingType rendering_type;
 };

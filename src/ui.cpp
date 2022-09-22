@@ -30,6 +30,10 @@ void UI::onUpdate() {
     ImGui::SliderFloat("Clear Color G", window_clear_color_g, 0.0f, 1.0f);
     ImGui::SliderFloat("Clear Color B", window_clear_color_b, 0.0f, 1.0f);
 
+    if (ImGui::Button("Swap modes")) {
+        std::cout << "Swaping between modes..." << std::endl;
+    }
+
     ImGui::End();
 
     ImGui::Render();
