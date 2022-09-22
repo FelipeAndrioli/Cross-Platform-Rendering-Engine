@@ -12,11 +12,7 @@
 #include "../include/camera.h"
 
 #include "../src/scenes/pixel_rendering.h"
-
-enum RenderingType {
-    PIXEL,
-    SCENE
-};
+#include "../src/util/rendering_type.h"
 
 class Scene {
     public:
