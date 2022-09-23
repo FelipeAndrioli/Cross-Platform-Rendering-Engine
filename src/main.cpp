@@ -4,13 +4,15 @@
 
 State state;
 
+void swapModes();
+
 void init () {
     state.config_mode = false;
     state.rendering_type = SCENE;
     state.scene = new Scene(state.rendering_type);
     //state.renderer = new Renderer(state.scene);
     state.renderer = new Renderer();
-    state.ui = new UI(state.window);
+    state.ui = new UI(state.window, swapModes);
 
     state.ui->window_clear_color_r = &state.window->clear_color_r;
     state.ui->window_clear_color_g = &state.window->clear_color_g;
@@ -25,6 +27,18 @@ void tick() {
 }
 
 void update() {
+
+    if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
+        state.config_mode = !state.config_mode;
+    }
+
+    if (state.config_mode) {
+        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        state.window->mouse->first_mouse = true;
+    } else {
+        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+
     state.renderer->update(
         state.scene, 
         state.window->keyboard, 
@@ -43,16 +57,6 @@ void update() {
     state.frames++;
     state.last_time = state.current_time;
 
-    if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
-        state.config_mode = !state.config_mode;
-    }
-
-    if (state.config_mode) {
-        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        state.window->mouse->first_mouse = true;
-    } else {
-        glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    }
 
     /*
     if (state.current_time - state.last_time >= 1.0f) {
@@ -69,6 +73,25 @@ void destroy() {
     delete state.renderer;
     delete state.ui;
     delete state.window;
+}
+
+void swapModes() {
+    std::cout << "Work in progress" << std::endl;
+    /*
+    delete state.scene;
+
+    state.rendering_type = PIXEL;
+    if (state.rendering_type == SCENE) {
+        std::cout << "Changing rendering type to PIXEL..." << std::endl;
+    } 
+
+    if (state.rendering_type == PIXEL) {
+        std::cout << "Changing rendering type to SCENE..." << std::endl;
+        state.rendering_type = SCENE;
+    }
+    
+    state.scene = new Scene(PIXEL);
+    */
 }
 
 int main() {

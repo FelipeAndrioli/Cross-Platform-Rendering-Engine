@@ -11,13 +11,16 @@
 
 class UI { 
     public:
-        UI(Window *window);
+        UI(Window *window, void(*swapModes)());
         ~UI();
         void onUpdate();
         float *window_clear_color_r;
         float *window_clear_color_g;
         float *window_clear_color_b;
     private:
+        typedef void (*void_function)();
+        void_function m_swap;
+
         ImGuiContext *imgui_context;
         void onCreate();
         void onDestroy();

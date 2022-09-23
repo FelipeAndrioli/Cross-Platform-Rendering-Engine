@@ -1,6 +1,6 @@
 #include "../include/ui.h"
 
-UI::UI(Window *window) {
+UI::UI(Window *window, void(*swapModes)()) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -8,6 +8,8 @@ UI::UI(Window *window) {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window->m_window, true);
     ImGui_ImplOpenGL3_Init("#version 440");
+
+    m_swap = swapModes;
 }
 
 UI::~UI() {
@@ -32,6 +34,7 @@ void UI::onUpdate() {
 
     if (ImGui::Button("Swap modes")) {
         std::cout << "Swaping between modes..." << std::endl;
+        m_swap();
     }
 
     ImGui::End();
