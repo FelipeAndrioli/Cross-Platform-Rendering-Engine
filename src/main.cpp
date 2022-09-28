@@ -10,7 +10,6 @@ void init () {
     state.config_mode = false;
     state.rendering_type = SCENE;
     state.scene = new Scene(state.rendering_type);
-    //state.renderer = new Renderer(state.scene);
     state.renderer = new Renderer();
     state.ui = new UI(state.window, swapModes);
 
@@ -77,21 +76,6 @@ void destroy() {
 
 void swapModes() {
     std::cout << "Work in progress" << std::endl;
-    /*
-    delete state.scene;
-
-    state.rendering_type = PIXEL;
-    if (state.rendering_type == SCENE) {
-        std::cout << "Changing rendering type to PIXEL..." << std::endl;
-    } 
-
-    if (state.rendering_type == PIXEL) {
-        std::cout << "Changing rendering type to SCENE..." << std::endl;
-        state.rendering_type = SCENE;
-    }
-    
-    state.scene = new Scene(PIXEL);
-    */
 }
 
 int main() {
