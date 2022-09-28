@@ -34,6 +34,10 @@ void update() {
     if (state.config_mode) {
         glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         state.window->mouse->first_mouse = true;
+        state.window->keyboard.keys[GLFW_KEY_W].pressed = false;
+        state.window->keyboard.keys[GLFW_KEY_A].pressed = false;
+        state.window->keyboard.keys[GLFW_KEY_S].pressed = false;
+        state.window->keyboard.keys[GLFW_KEY_D].pressed = false;
     } else {
         glfwSetInputMode(state.window->m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
