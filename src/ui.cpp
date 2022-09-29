@@ -34,15 +34,16 @@ void UI::onUpdate() {
     ImGui::SliderFloat("Clear Color G", window_clear_color_g, 0.0f, 1.0f);
     ImGui::SliderFloat("Clear Color B", window_clear_color_b, 0.0f, 1.0f);
 
-    static char model_path[128] = "";
-    static char v_shader_path[128] = "";
-    static char f_shader_path[128] = "";
+    static char t_model_path[128] = "";
+    //static char v_shader_path[128] = "";
+    //static char f_shader_path[128] = "";
 
-    ImGui::InputText("Model path", model_path, IM_ARRAYSIZE(model_path));
+    ImGui::InputText("Model path", t_model_path, IM_ARRAYSIZE(t_model_path));
 
     if (ImGui::Button("Add model")) {
-        const char *new_model_path = model_path;
-        m_addModel(new_model_path);
+        std::cout << "Loading model..." << std::endl;
+        const char *model_path = t_model_path;
+        m_addModel(model_path);
     }
 
     if (ImGui::Button("Swap modes")) {

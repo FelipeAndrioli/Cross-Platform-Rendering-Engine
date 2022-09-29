@@ -31,6 +31,23 @@ Scene::Scene(RenderingType rendering_type) {
     }
 }
 
+std::string Scene::processPathInput(const char *input) {
+    std::string s = "";
+    int i = 0;
+
+    while (input[i] != '\0') {
+        s += input[i];
+
+        if (s[i] == '\\') { 
+            s[i] = '/';
+        }
+        
+        i++;
+    }
+    
+    return s;
+}
+
 void Scene::update(Camera *TheCamera) {
     for (int i = 0; i < shaders.size(); i++) {
         shaders[i].use();
@@ -49,8 +66,9 @@ void Scene::update(Camera *TheCamera) {
     }
 }
 
-void Scene::addModel(const char *model_path) {
-    std::cout << model_path << std::endl;
+void Scene::addModel(const char *raw_model_path) {
+    std::string new_path = processPathInput(raw_model_path);
+    const char *model_path = new_path.c_str();
     Model *new_model = new Model(model_path);
     models.push_back(*new_model);
 }

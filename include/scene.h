@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <unordered_map>
 
 #include "../libs/glm/glm/glm.hpp"
@@ -20,7 +21,7 @@ class Scene {
         ~Scene();
         void draw();
         void update(Camera *TheCamera);
-        static void addModel(const char *model_path);
+        static void addModel(const char *raw_model_path);
         inline static std::vector<Model> models;
         std::vector<Shader> shaders;
 
@@ -28,4 +29,7 @@ class Scene {
         Shader *SceneShader;
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
+
+    private:
+        static std::string processPathInput(const char *input);
 };
