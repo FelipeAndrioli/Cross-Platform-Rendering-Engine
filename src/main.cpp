@@ -28,7 +28,11 @@ void tick() {
 void update() {
 
     if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
-        state.config_mode = !state.config_mode;
+        state.config_mode = true;
+    }
+    
+    if (state.window->keyboard.keys[GLFW_KEY_9].pressed) {
+        state.config_mode = false;
     }
 
     if (state.config_mode) {
