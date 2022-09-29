@@ -11,12 +11,12 @@ void init () {
     state.rendering_type = SCENE;
     state.scene = new Scene(state.rendering_type);
     state.renderer = new Renderer();
-    state.ui = new UI(state.window, swapModes);
+    state.ui = new UI(state.window, swapModes, state.scene->addModel);
 
     state.ui->window_clear_color_r = &state.window->clear_color_r;
     state.ui->window_clear_color_g = &state.window->clear_color_g;
     state.ui->window_clear_color_b = &state.window->clear_color_b;
-    
+
     state.last_time = glfwGetTime();
     state.frames = 0;
 }

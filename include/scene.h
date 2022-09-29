@@ -20,7 +20,8 @@ class Scene {
         ~Scene();
         void draw();
         void update(Camera *TheCamera);
-        std::vector<Model> models;
+        static void addModel(const char *model_path);
+        inline static std::vector<Model> models;
         std::vector<Shader> shaders;
 
         // these need to be removed

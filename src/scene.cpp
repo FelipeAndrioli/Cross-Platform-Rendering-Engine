@@ -15,15 +15,19 @@ Scene::Scene(RenderingType rendering_type) {
     if (rendering_type == SCENE) {
         std::cout << "Rendering Scene..." << std::endl;
 
-        const char *backpack_model_path = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/models/backpack/backpack.obj";
-        const char *bp_v_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.vs";
-        const char *bp_f_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.fs";
+        //const char *backpack_model_path = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/models/backpack/backpack.obj";
 
-        Shader *backpack_shader = new Shader(bp_v_shader, bp_f_shader, nullptr);
-        Model *backpack_model = new Model(backpack_model_path);
+        //Shader *backpack_shader = new Shader(bp_v_shader, bp_f_shader, nullptr);
+        //Model *backpack_model = new Model(backpack_model_path);
 
-        models.push_back(*backpack_model);
-        shaders.push_back(*backpack_shader);
+        //models.push_back(*backpack_model);
+        //shaders.push_back(*backpack_shader);
+
+        const char *v_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.vs";
+        const char *f_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.fs";
+        Shader *basic_shaders = new Shader(v_shader, f_shader, nullptr);
+
+        shaders.push_back(*basic_shaders);
     }
 }
 
@@ -45,9 +49,17 @@ void Scene::update(Camera *TheCamera) {
     }
 }
 
+void Scene::addModel(const char *model_path) {
+    std::cout << model_path << std::endl;
+    Model *new_model = new Model(model_path);
+    models.push_back(*new_model);
+}
+
 void Scene::draw() {
-    for (int i = 0; i < 1; i++) {
-        models[i].Draw(shaders[i]);
+    for (int i = 0; i < models.size(); i++) {
+        for (int j = 0; j < shaders.size(); j++) {
+            models[i].Draw(shaders[j]);
+        }
     }
 }
 
