@@ -1,7 +1,7 @@
 #include "../include/ui.h"
 
 UI::UI(Window *window, void(*swapModes)(), void(*addModel)
-    (const char *model_path)) {
+    (const char *model_path, bool flip_texture)) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -9,6 +9,8 @@ UI::UI(Window *window, void(*swapModes)(), void(*addModel)
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window->m_window, true);
     ImGui_ImplOpenGL3_Init("#version 440");
+
+    flip_texture = true;
 
     m_swap = swapModes;
     m_addModel = addModel;
@@ -43,8 +45,10 @@ void UI::onUpdate() {
     if (ImGui::Button("Add model")) {
         std::cout << "Loading model..." << std::endl;
         const char *model_path = t_model_path;
-        m_addModel(model_path);
+        m_addModel(model_path, flip_texture);
     }
+
+    ImGui::Checkbox("STBI Flip Vertically", &flip_texture);
 
     if (ImGui::Button("Swap modes")) {
         std::cout << "Swaping between modes..." << std::endl;

@@ -12,19 +12,22 @@
 class UI { 
     public:
         UI(Window *window, void(*swapModes)(), void(*addModel)
-            (const char *model_path));
+            (const char *model_path, bool flip_texture));
         ~UI();
         void onUpdate();
         float *window_clear_color_r;
         float *window_clear_color_g;
         float *window_clear_color_b;
 
+        bool flip_texture;
+
     private:
         typedef void (*void_function)();
-        typedef void (*void_one_param_function)(const char *param);
+        typedef void (*void_two_param_function)(const char *param, 
+            bool flip_texture);
 
         void_function m_swap;
-        void_one_param_function m_addModel;
+        void_two_param_function m_addModel;
 
         ImGuiContext *imgui_context;
         void onCreate();

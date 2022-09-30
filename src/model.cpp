@@ -1,8 +1,7 @@
 #include "../include/model.h"
 
-Model::Model(const char *path) {
-    std::cout << "Initializing Model..." << std::endl;
-
+Model::Model(const char *path, bool flip_texture) {
+    stbi_flip_vertically = flip_texture;
     loadModel(path);
 }
 
@@ -20,8 +19,11 @@ void Model::loadModel(std::string path) {
     // read file via ASSIMP
     Assimp::Importer importer;
 
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | 
-            aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+    const aiScene *scene = importer.ReadFile(path, 
+            aiProcess_Triangulate | 
+            aiProcess_FlipUVs | 
+            aiProcess_GenSmoothNormals | 
+            aiProcess_CalcTangentSpace);
 
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -128,7 +130,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // diffuse: texture_diffuseN
     // specular: texture_specularN
     // normal: texture_normalN
-    
+   
     // 1. diffuse maps 
     std::vector<Texture> diffuseMaps = loadMaterialTextures(material, 
             aiTextureType_DIFFUSE, "texture_diffuse");
@@ -158,6 +160,8 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType
 
     std::vector<Texture> textures;
 
+    std::cout << typeName << " -> " << mat->GetTextureCount(type) << std::endl;
+
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString util_str;
         mat->GetTexture(type, i, &util_str);
@@ -172,7 +176,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType
                 break;
             }
         }
-       
+
         if (!skip) {
             Texture texture;
             texture.id = TextureFromFile(util_str.C_Str(), directory);
@@ -189,7 +193,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType
 unsigned int Model::TextureFromFile(const char *path, const std::string
         &directory, bool gamma) {
 
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(stbi_flip_vertically);
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 

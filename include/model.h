@@ -19,13 +19,15 @@
 
 class Model {
     public:
-        Model(const char *path);
+        Model(const char *path, bool flip_texture);
         ~Model();
         std::vector<Mesh> meshes;
         std::vector<Texture> textures_loaded;
         std::string directory;
         bool gamma_correction;
         void Draw(Shader &shader);
+
+        bool stbi_flip_vertically; 
     private:
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);
