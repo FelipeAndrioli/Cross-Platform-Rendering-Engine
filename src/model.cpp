@@ -1,7 +1,9 @@
 #include "../include/model.h"
 
-Model::Model(const char *path, bool flip_texture) {
+Model::Model(const char *path, const char *id,bool flip_texture) {
+
     stbi_flip_vertically = flip_texture;
+    model_id = id;
     loadModel(path);
 }
 

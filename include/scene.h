@@ -21,7 +21,8 @@ class Scene {
         ~Scene();
         void draw();
         void update(Camera *TheCamera);
-        static void addModel(const char *raw_model_path, bool flip_texture);
+        static void addModel(const char *raw_model_path, const char *model_id, 
+            bool flip_texture);
         inline static std::vector<Model> models;
         std::vector<Shader> shaders;
 
