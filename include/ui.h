@@ -8,6 +8,7 @@
 #include "../libs/imgui/imgui_impl_opengl3.h"
 
 #include "../include/window.h"
+#include "../include/model.h"
 
 class UI { 
     public:
@@ -20,6 +21,8 @@ class UI {
         float *window_clear_color_b;
 
         bool flip_texture;
+
+        inline static std::vector<Model> scene_models;        
 
     private:
         typedef void (*void_function)();

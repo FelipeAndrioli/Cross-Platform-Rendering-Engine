@@ -57,6 +57,14 @@ void UI::onUpdate() {
         m_swap();
     }
 
+    // each model
+
+    for (int i = 0; i < scene_models.size(); i++) {
+        ImGui::TextUnformatted(scene_models[i].model_id); 
+    }
+
+    // end each model
+
     ImGui::End();
 
     ImGui::Render();
