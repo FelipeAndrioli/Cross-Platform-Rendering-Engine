@@ -1,7 +1,8 @@
 #include "../include/ui.h"
 
-UI::UI(Window *window, void(*swapModes)(), void(*addModel)
-    (const char *model_path, std::string model_id, bool flip_texture)) {
+UI::UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(), 
+    void(*addModel)(const char *model_path, std::string model_id, 
+    bool flip_texture), void(*deleteModel)(std::string id)) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -13,7 +14,9 @@ UI::UI(Window *window, void(*swapModes)(), void(*addModel)
     flip_texture = true;
 
     m_swap = swapModes;
+    m_resetScene = resetSceneModels;
     m_addModel = addModel;
+    m_deleteModel = deleteModel;
 }
 
 UI::~UI() {
@@ -28,8 +31,8 @@ void UI::onUpdate() {
 
     ImGui::Begin("Configurations");
 
-    if (ImGui::Button("Test")) {
-        std::cout << "Hello there!" << std::endl;  
+    if (ImGui::Button("Debug")) {
+        std::cout << "Objects amount -> " << scene_models->size() << std::endl;
     }
 
     ImGui::SliderFloat("Clear Color R", window_clear_color_r, 0.0f, 1.0f);
@@ -46,23 +49,35 @@ void UI::onUpdate() {
     ImGui::Checkbox("STBI Flip Vertically", &flip_texture);
     
     if (ImGui::Button("Add model")) {
+        /* TODO
+         *
+         * - Add validation when pressed with empty values
+         *
+         * */
         std::cout << "Loading model..." << std::endl;
         const char *model_path = t_model_path;
         const char *model_id = t_model_id;
         m_addModel(model_path, model_id, flip_texture);
     }
-    
+   
     if (ImGui::Button("Swap modes")) {
         std::cout << "Swaping between modes..." << std::endl;
         m_swap();
     }
 
-    // each model
-    std::vector<Model>::iterator it;
+    if (ImGui::Button("Reset Scene Models")) {
+        m_resetScene();
+    } 
 
+    // each model
     for (it = scene_models->begin(); it != scene_models->end(); it++) {
         ImGui::Begin(it->model_id.c_str());
         ImGui::TextUnformatted(it->model_id.c_str()); 
+
+        if (ImGui::Button("Delete Model")) {
+            m_deleteModel(it->model_id); 
+            it--;
+        }
         ImGui::End();
     }
     // end each model

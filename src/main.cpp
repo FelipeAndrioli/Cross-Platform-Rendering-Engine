@@ -11,11 +11,14 @@ void init () {
     state.rendering_type = SCENE;
     state.scene = new Scene(state.rendering_type);
     state.renderer = new Renderer();
-    state.ui = new UI(state.window, swapModes, state.scene->addModel);
+    state.ui = new UI(state.window, swapModes, state.scene->resetSceneModels,
+        state.scene->addModel, state.scene->deleteModel);
 
     state.ui->window_clear_color_r = &state.window->clear_color_r;
     state.ui->window_clear_color_g = &state.window->clear_color_g;
     state.ui->window_clear_color_b = &state.window->clear_color_b;
+    
+    state.ui->scene_models = &state.scene->models;
 
     state.last_time = glfwGetTime();
     state.frames = 0;
@@ -27,8 +30,6 @@ void tick() {
 
 void update() {
 
-    state.ui->scene_models = &state.scene->models;
-    
     if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
         state.config_mode = true;
     }
@@ -59,6 +60,7 @@ void update() {
     state.scene->update(state.renderer->TheCamera);
     state.renderer->draw(state.scene);
     state.ui->onUpdate(); 
+    
     //state.scene->draw();
 
     state.current_time = glfwGetTime();

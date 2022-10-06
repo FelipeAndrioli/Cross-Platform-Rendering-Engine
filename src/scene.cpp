@@ -74,6 +74,18 @@ void Scene::addModel(const char *raw_model_path, std::string model_id,
     models.push_back(*new_model);
 }
 
+void Scene::resetSceneModels() {
+    models.clear();
+}
+
+void Scene::deleteModel(std::string id) {
+    for (int i = 0; i < models.size(); i++) {
+        if (models[i].model_id == id) {
+            models.erase(models.begin() + i);
+        }
+    }
+}
+
 void Scene::draw() {
     for (int i = 0; i < models.size(); i++) {
         for (int j = 0; j < shaders.size(); j++) {

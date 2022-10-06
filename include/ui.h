@@ -12,8 +12,9 @@
 
 class UI { 
     public:
-        UI(Window *window, void(*swapModes)(), void(*addModel)
-            (const char *model_path, std::string model_id, bool flip_texture));
+        UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(), 
+            void(*addModel)(const char *model_path, std::string model_id, 
+            bool flip_texture), void(*deleteModel)(std::string id));
         ~UI();
         void onUpdate();
         float *window_clear_color_r;
@@ -26,11 +27,16 @@ class UI {
 
     private:
         typedef void (*void_function)();
+        typedef void (*void_one_param_function)(std::string id);
         typedef void (*void_two_param_function)(const char *param_one, 
             std::string param_two, bool param_bool);
 
         void_function m_swap;
+        void_function m_resetScene;
+        void_one_param_function m_deleteModel;
         void_two_param_function m_addModel;
+
+        std::vector<Model>::iterator it;
 
         ImGuiContext *imgui_context;
         void onCreate();
