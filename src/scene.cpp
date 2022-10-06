@@ -66,7 +66,7 @@ void Scene::update(Camera *TheCamera) {
     }
 }
 
-void Scene::addModel(const char *raw_model_path, const char *model_id,
+void Scene::addModel(const char *raw_model_path, std::string model_id,
     bool flip_texture) {
     std::string new_path = processPathInput(raw_model_path);
     const char *model_path = new_path.c_str();

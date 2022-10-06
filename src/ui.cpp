@@ -1,7 +1,7 @@
 #include "../include/ui.h"
 
 UI::UI(Window *window, void(*swapModes)(), void(*addModel)
-    (const char *model_path, const char *model_id, bool flip_texture)) {
+    (const char *model_path, std::string model_id, bool flip_texture)) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -58,11 +58,13 @@ void UI::onUpdate() {
     }
 
     // each model
+    std::vector<Model>::iterator it;
 
-    for (int i = 0; i < scene_models.size(); i++) {
-        ImGui::TextUnformatted(scene_models[i].model_id); 
+    for (it = scene_models->begin(); it != scene_models->end(); it++) {
+        ImGui::Begin(it->model_id.c_str());
+        ImGui::TextUnformatted(it->model_id.c_str()); 
+        ImGui::End();
     }
-
     // end each model
 
     ImGui::End();

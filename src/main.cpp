@@ -27,7 +27,7 @@ void tick() {
 
 void update() {
 
-    state.ui->scene_models = state.scene->models;
+    state.ui->scene_models = &state.scene->models;
     
     if (state.window->keyboard.keys[GLFW_KEY_0].pressed) {
         state.config_mode = true;

@@ -19,7 +19,7 @@
 
 class Model {
     public:
-        Model(const char *path, const char *id, bool flip_texture);
+        Model(const char *path, std::string id, bool flip_texture);
         ~Model();
         
         std::vector<Mesh> meshes;
@@ -29,7 +29,7 @@ class Model {
         bool gamma_correction;
         bool stbi_flip_vertically; 
        
-        const char *model_id;
+        std::string model_id;
 
         void Draw(Shader &shader);
 

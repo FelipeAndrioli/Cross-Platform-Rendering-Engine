@@ -1,6 +1,6 @@
 #include "../include/model.h"
 
-Model::Model(const char *path, const char *id,bool flip_texture) {
+Model::Model(const char *path, std::string id,bool flip_texture) {
 
     stbi_flip_vertically = flip_texture;
     model_id = id;
@@ -161,8 +161,6 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType
         type, std::string typeName) {
 
     std::vector<Texture> textures;
-
-    std::cout << typeName << " -> " << mat->GetTextureCount(type) << std::endl;
 
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString util_str;

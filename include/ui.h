@@ -13,7 +13,7 @@
 class UI { 
     public:
         UI(Window *window, void(*swapModes)(), void(*addModel)
-            (const char *model_path, const char *model_id, bool flip_texture));
+            (const char *model_path, std::string model_id, bool flip_texture));
         ~UI();
         void onUpdate();
         float *window_clear_color_r;
@@ -22,12 +22,12 @@ class UI {
 
         bool flip_texture;
 
-        inline static std::vector<Model> scene_models;        
+        std::vector<Model> *scene_models;
 
     private:
         typedef void (*void_function)();
         typedef void (*void_two_param_function)(const char *param_one, 
-            const char *param_two, bool param_bool);
+            std::string param_two, bool param_bool);
 
         void_function m_swap;
         void_two_param_function m_addModel;

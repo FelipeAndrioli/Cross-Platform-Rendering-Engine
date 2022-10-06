@@ -15,7 +15,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
 }
 
 Mesh::~Mesh() {
-    std::cout << "Destroying mesh..." << std::endl;
+    //std::cout << "Destroying mesh..." << std::endl;
 }
 
 void Mesh::Draw(Shader &shader) {
