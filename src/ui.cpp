@@ -31,6 +31,19 @@ void UI::onUpdate() {
 
     ImGui::Begin("Configurations");
 
+    std::string handler = std::to_string(*p_current_frame_time) + " current frame time";
+    ImGui::TextUnformatted(handler.c_str());
+    handler = std::to_string(*p_last_frame_time) + " last frame time";
+    ImGui::TextUnformatted(handler.c_str());
+    handler = std::to_string(*p_delta_time) + " delta time";
+    ImGui::TextUnformatted(handler.c_str());
+
+    handler = std::to_string(*p_fps) + " fps";
+    ImGui::TextUnformatted(handler.c_str());
+    ImGui::SameLine();
+    handler = std::to_string(*p_ms) + " ms";
+    ImGui::TextUnformatted(handler.c_str());
+
     if (ImGui::Button("Debug")) {
         std::cout << "Objects amount -> " << scene_models->size() << std::endl;
     }

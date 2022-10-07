@@ -14,12 +14,18 @@ class State {
         UI *ui;
         Scene *scene;
 
-        float last_time;
-        float current_time;
-        float delta_time;
-
-        int tick;
+        // Start timing
+        double current_frame_time;
+        double last_frame_time;
+        double delta_time;
+        double fps;
+        double ms;
         int frames;
+
+        const int TICKS_PER_SECOND = 30;
+        const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
+        const int MAX_FRAMESKIP = 10;
+        // End timing
 
         bool config_mode;
 

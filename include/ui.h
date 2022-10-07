@@ -23,6 +23,12 @@ class UI {
 
         bool flip_texture;
 
+        double *p_current_frame_time;
+        double *p_last_frame_time;
+        double *p_delta_time;
+        double *p_fps;
+        double *p_ms;
+
         std::vector<Model> *scene_models;
 
     private:

@@ -17,11 +17,18 @@ void init () {
     state.ui->window_clear_color_r = &state.window->clear_color_r;
     state.ui->window_clear_color_g = &state.window->clear_color_g;
     state.ui->window_clear_color_b = &state.window->clear_color_b;
-    
-    state.ui->scene_models = &state.scene->models;
+   
+    state.ui->p_current_frame_time = &state.current_frame_time;    
+    state.ui->p_last_frame_time = &state.last_frame_time;    
+    state.ui->p_delta_time = &state.delta_time; 
+    state.ui->p_fps = &state.fps; 
+    state.ui->p_ms = &state.ms; 
 
-    state.last_time = glfwGetTime();
     state.frames = 0;
+    state.fps = 0.0;
+    state.ms = 0.0;
+
+    state.ui->scene_models = &state.scene->models;
 }
 
 void tick() {
@@ -54,29 +61,24 @@ void update() {
         state.window->keyboard, 
         state.window->mouse, 
         state.delta_time, 
-        state.current_time
+        state.delta_time
     );
 
     state.scene->update(state.renderer->TheCamera);
+
+    state.current_frame_time = glfwGetTime();
     state.renderer->draw(state.scene);
-    state.ui->onUpdate(); 
-    
-    //state.scene->draw();
-
-    state.current_time = glfwGetTime();
-    state.delta_time = state.current_time - state.last_time;
+    state.delta_time = state.current_frame_time - state.last_frame_time; 
     state.frames++;
-    state.last_time = state.current_time;
 
-
-    /*
-    if (state.current_time - state.last_time >= 1.0f) {
-        printf("%f ms/frame\n", 1000.0 / static_cast<double>(state.frames));
-        printf("%f frame/s\n", state.frames / 1.0);
+    if (state.delta_time >= 1.0 / 60.0) {
+        state.fps = (1.0 / state.delta_time) * state.frames;
+        state.ms = (state.delta_time / state.frames) * 1000;
+        state.last_frame_time = state.current_frame_time;
         state.frames = 0;
-        state.last_time += 1.0;
-    }
-    */
+    } 
+    
+    state.ui->onUpdate(); 
 }
 
 void destroy() {
