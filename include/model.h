@@ -11,6 +11,10 @@
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
+#include "../src/util/transformations.h"
+
+#include "../src/ui/ui_model.h"
+
 #include "mesh.h"
 
 #define STB_IMAGE_STATIC
@@ -33,6 +37,8 @@ class Model {
 
         void Draw(Shader &shader);
 
+        Transformations *model_transformations;
+        float scale_handler;
     private:
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);

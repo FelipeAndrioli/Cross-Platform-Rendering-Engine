@@ -5,10 +5,17 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
     stbi_flip_vertically = flip_texture;
     model_id = id;
     loadModel(path);
+
+    model_transformations = new Transformations();
+    scale_handler = 1.0f;
+    model_transformations->translation = glm::vec3(0.0f, 0.0f, 0.0f);
+    model_transformations->scalation = glm::vec3(scale_handler);
+    model_transformations->rotation = glm::vec3(0.0f);
 }
 
 Model::~Model() {
     std::cout << "Destroying Model..." << std::endl;
+    delete model_transformations;
 }
 
 void Model::Draw(Shader &shader) {

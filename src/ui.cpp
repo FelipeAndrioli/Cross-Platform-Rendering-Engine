@@ -3,6 +3,9 @@
 UI::UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(), 
     void(*addModel)(const char *model_path, std::string model_id, 
     bool flip_texture), void(*deleteModel)(std::string id)) {
+
+    std::cout << "Initializing UI" << std::endl;
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -17,6 +20,7 @@ UI::UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(),
     m_resetScene = resetSceneModels;
     m_addModel = addModel;
     m_deleteModel = deleteModel;
+
 }
 
 UI::~UI() {
@@ -72,7 +76,7 @@ void UI::onUpdate() {
         const char *model_id = t_model_id;
         m_addModel(model_path, model_id, flip_texture);
     }
-   
+
     if (ImGui::Button("Swap modes")) {
         std::cout << "Swaping between modes..." << std::endl;
         m_swap();
@@ -83,26 +87,61 @@ void UI::onUpdate() {
     } 
 
     // each model
-    for (it = scene_models->begin(); it != scene_models->end(); it++) {
-        ImGui::Begin(it->model_id.c_str());
-        ImGui::TextUnformatted(it->model_id.c_str()); 
+    for (int i = 0; i < scene_models->size(); i++) {
+        Model *current_model = scene_models->at(i);
+        
+        ImGui::Begin(current_model->model_id.c_str());
+        
+        std::string t_label_x = "Translation x " + current_model->model_id;
+        std::string t_label_y = "Translation y " + current_model->model_id;
+        std::string t_label_z = "Translation z " + current_model->model_id;
+        
+        std::string s_label = "Scalation " + current_model->model_id;
 
-        if (ImGui::Button("Delete Model")) {
-            m_deleteModel(it->model_id); 
-            it--;
+        std::string r_label_x = "Rotation x " + current_model->model_id;
+        std::string r_label_y = "Rotation y " + current_model->model_id;
+        std::string r_label_z = "Rotation z " + current_model->model_id;
+      
+        ImGui::SliderFloat(t_label_x.c_str(), 
+            &current_model->model_transformations->translation.x, -50.0f, 50.0f);
+        ImGui::SliderFloat(t_label_y.c_str(), 
+            &current_model->model_transformations->translation.y, -50.0f, 50.0f);
+        ImGui::SliderFloat(t_label_z.c_str(), 
+            &current_model->model_transformations->translation.z, -50.0f, 50.0f);
+        ImGui::SliderFloat(s_label.c_str(), &current_model->scale_handler, 
+            0.0f, 3.0f);
+        ImGui::SliderFloat(r_label_x.c_str(), 
+            &current_model->model_transformations->rotation.x, -10.0f, 10.0f);
+        ImGui::SliderFloat(r_label_y.c_str(), 
+            &current_model->model_transformations->rotation.y, -10.0f, 10.0f);
+        ImGui::SliderFloat(r_label_z.c_str(), 
+            &current_model->model_transformations->rotation.z, -10.0f, 10.0f);
+        
+        if (ImGui::Button("Delete model")) {
+            m_deleteModel(current_model->model_id);  
         }
+
         ImGui::End();
     }
-    // end each model
-
+    // each model end
+    
     ImGui::End();
-
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void UI::onDestroy() {
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+}
+
+bool UI::model_getter(void *data, int index, const char** output) {
+    Model *models = (Model*)data;
+    Model &current_model = models[index];
+     
+    *output = current_model.model_id.c_str();
+
+    return true;
 }

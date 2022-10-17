@@ -25,9 +25,9 @@ Scene::Scene(RenderingType rendering_type) {
 
         const char *v_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.vs";
         const char *f_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.fs";
-        Shader *basic_shaders = new Shader(v_shader, f_shader, nullptr);
-
-        shaders.push_back(*basic_shaders);
+        //Shader *basic_shaders = new Shader(v_shader, f_shader, nullptr);
+        //shaders.push_back(basic_shaders);
+        SceneShader = new Shader(v_shader, f_shader, nullptr);
     }
 }
 
@@ -49,20 +49,37 @@ std::string Scene::processPathInput(const char *input) {
 }
 
 void Scene::update(Camera *TheCamera) {
-    for (int i = 0; i < shaders.size(); i++) {
-        shaders[i].use();
-        glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
-            (float)800/(float)600, 0.1f, 100.0f);
-        glm::mat4 view = TheCamera->getViewMatrix();
+    for (int i = 0; i < models.size(); i++) {
+        //for (int j = 0; j < shaders.size(); j++) {
+            //shaders[j]->use();
+            SceneShader->use();
+            glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
+                (float)800/(float)600, 0.1f, 100.0f);
+            glm::mat4 view = TheCamera->getViewMatrix();
 
-        shaders[i].setMat4("projection", projection);
-        shaders[i].setMat4("view", view);
-      
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+            //shaders[j]->setMat4("projection", projection);
+            //shaders[j]->setMat4("view", view);
+         
+            SceneShader->setMat4("projection", projection);
+            SceneShader->setMat4("view", view);
 
-        shaders[i].setMat4("model", model);
+            glm::mat4 model = glm::mat4(1.0f);
+
+            //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+            //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+            models[i]->model_transformations->scalation = glm::vec3(models[i]->scale_handler);
+            model = glm::scale(model, models[i]->model_transformations->scalation);
+            model = glm::translate(model, models[i]->model_transformations->translation);
+   
+            std::cout << models[i]->model_id;
+            std::cout << " " << models[i]->model_transformations->translation.x;
+            std::cout << " " << models[i]->model_transformations->translation.y;
+            std::cout << " " << models[i]->model_transformations->translation.z << std::endl;
+
+            //shaders[j]->setMat4("model", model);
+            SceneShader->setMat4("model", model);
+        //}
     }
 }
 
@@ -71,26 +88,47 @@ void Scene::addModel(const char *raw_model_path, std::string model_id,
     std::string new_path = processPathInput(raw_model_path);
     const char *model_path = new_path.c_str();
     Model *new_model = new Model(model_path, model_id, flip_texture);
-    models.push_back(*new_model);
+    models.push_back(new_model);
 }
 
 void Scene::resetSceneModels() {
     models.clear();
+    shaders.clear();
 }
 
 void Scene::deleteModel(std::string id) {
     for (int i = 0; i < models.size(); i++) {
-        if (models[i].model_id == id) {
+        if (models[i]->model_id == id) {
             models.erase(models.begin() + i);
         }
     }
 }
 
-void Scene::draw() {
+void Scene::draw(Camera *TheCamera) {
+
     for (int i = 0; i < models.size(); i++) {
-        for (int j = 0; j < shaders.size(); j++) {
-            models[i].Draw(shaders[j]);
-        }
+        SceneShader->use();
+        glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
+            (float)800/(float)600, 0.1f, 100.0f);
+        glm::mat4 view = TheCamera->getViewMatrix();
+     
+        SceneShader->setMat4("projection", projection);
+        SceneShader->setMat4("view", view);
+
+        glm::mat4 model = glm::mat4(1.0f);
+
+        models[i]->model_transformations->scalation = glm::vec3(models[i]->scale_handler);
+        model = glm::scale(model, models[i]->model_transformations->scalation);
+        model = glm::translate(model, models[i]->model_transformations->translation);
+        model = glm::rotate(model, models[i]->model_transformations->rotation.x, 
+            glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, models[i]->model_transformations->rotation.y, 
+            glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, models[i]->model_transformations->rotation.z, 
+            glm::vec3(0.0f, 0.0f, 1.0f));
+
+        SceneShader->setMat4("model", model);
+        models[i]->Draw(*SceneShader);
     }
 }
 

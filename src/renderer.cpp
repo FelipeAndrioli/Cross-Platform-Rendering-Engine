@@ -2,6 +2,7 @@
 
 Renderer::Renderer() {
 
+    std::cout << "Initializing Renderer" << std::endl;
     TheCamera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 }
 
@@ -71,13 +72,5 @@ void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
 }
 
 void Renderer::draw(Scene *CurrentScene) {
- 
-    CurrentScene->draw();
-    /*
-    CurrentScene->SceneShader->use();
-    glBindVertexArray(VAO);
-
-    glDrawElements(GL_TRIANGLES, sizeof(CurrentScene->indices.size()), 
-        GL_UNSIGNED_INT, 0);
-    */
+    CurrentScene->draw(TheCamera);
 }

@@ -10,6 +10,8 @@
 #include "../include/window.h"
 #include "../include/model.h"
 
+#include "../src/ui/ui_model.h"
+
 class UI { 
     public:
         UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(), 
@@ -29,7 +31,9 @@ class UI {
         double *p_fps;
         double *p_ms;
 
-        std::vector<Model> *scene_models;
+        std::vector<Model*> *scene_models;
+        
+        const char *listbox_items;
 
     private:
         typedef void (*void_function)();
@@ -42,9 +46,9 @@ class UI {
         void_one_param_function m_deleteModel;
         void_two_param_function m_addModel;
 
-        std::vector<Model>::iterator it;
-
         ImGuiContext *imgui_context;
         void onCreate();
         void onDestroy();
+
+        static bool model_getter(void *data, int index, const char** output);
 };

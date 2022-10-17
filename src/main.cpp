@@ -64,8 +64,6 @@ void update() {
         state.delta_time
     );
 
-    state.scene->update(state.renderer->TheCamera);
-
     state.current_frame_time = glfwGetTime();
     state.renderer->draw(state.scene);
     state.delta_time = state.current_frame_time - state.last_frame_time; 
