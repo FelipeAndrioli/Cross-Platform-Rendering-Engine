@@ -15,19 +15,15 @@ Scene::Scene(RenderingType rendering_type) {
     if (rendering_type == SCENE) {
         std::cout << "Rendering Scene..." << std::endl;
 
-        //const char *backpack_model_path = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/models/backpack/backpack.obj";
+        std::filesystem::path current_path = std::filesystem::current_path();
 
-        //Shader *backpack_shader = new Shader(bp_v_shader, bp_f_shader, nullptr);
-        //Model *backpack_model = new Model(backpack_model_path);
+        std::string v_shader = current_path.parent_path().string();
+        v_shader += "/src/shaders/scene_rendering/shader.vs";
 
-        //models.push_back(*backpack_model);
-        //shaders.push_back(*backpack_shader);
+        std::string f_shader = current_path.parent_path().string();
+        f_shader += "/src/shaders/scene_rendering/shader.fs";
 
-        const char *v_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.vs";
-        const char *f_shader = "C:/Users/Felipe/Documents/current_projects/Cross-Platform-Rendering-Engine/src/shaders/scene_rendering/backpack_shaders/shader.fs";
-        //Shader *basic_shaders = new Shader(v_shader, f_shader, nullptr);
-        //shaders.push_back(basic_shaders);
-        SceneShader = new Shader(v_shader, f_shader, nullptr);
+        SceneShader = new Shader(v_shader.c_str(), f_shader.c_str(), nullptr);
     }
 }
 
