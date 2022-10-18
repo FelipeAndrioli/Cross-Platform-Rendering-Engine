@@ -34,6 +34,8 @@ class Scene {
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
 
+        bool wireframe;
+        bool depth_test;
     private:
         static std::string processPathInput(const char *input);
 };

@@ -20,10 +20,16 @@ class Renderer {
         Renderer();
         Renderer(Scene *CurrentScene);
         ~Renderer();
+        void enableFeature(GLenum feature);
+        void disableFeature(GLenum feature);
+        void updateWireframe();
         void draw(Scene *CurrentScene);
         void update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse, 
             float delta_time, float time);
         Camera *TheCamera;
+
+        bool wireframe;
+        bool depth_test;
     private:
         Scene *TheScene;
         unsigned int VAO;

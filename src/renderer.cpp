@@ -4,6 +4,12 @@ Renderer::Renderer() {
 
     std::cout << "Initializing Renderer" << std::endl;
     TheCamera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+    wireframe = false;
+    depth_test = true;
+
+    updateWireframe();
+    enableFeature(GL_DEPTH_TEST);
 }
 
 Renderer::Renderer(Scene *CurrentScene) {
@@ -26,6 +32,22 @@ Renderer::Renderer(Scene *CurrentScene) {
 
 Renderer::~Renderer() {
     std::cout << "Destroying Renderer..." << std::endl;
+}
+
+void Renderer::enableFeature(GLenum feature) {
+    glEnable(feature);
+}
+
+void Renderer::disableFeature(GLenum feature) {
+    glDisable(feature);
+}
+
+void Renderer::updateWireframe() {
+    if (wireframe) { 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }
 
 void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,

@@ -11,12 +11,6 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
     model_transformations->translation = glm::vec3(0.0f, 0.0f, 0.0f);
     model_transformations->scalation = glm::vec3(scale_handler);
     model_transformations->rotation = glm::vec3(0.0f);
-
-    polygon_mode = GL_FILL;
-    polygon_face = GL_FRONT_AND_BACK;
-    depth_test = true;
-
-    enableFeature(GL_DEPTH_TEST);
 }
 
 Model::~Model() {
@@ -24,33 +18,7 @@ Model::~Model() {
     delete model_transformations;
 }
 
-void Model::enableFeature(GLenum feature) {
-    glEnable(feature);
-}
-
-void Model::disableFeature(GLenum feature) {
-    glDisable(feature);
-}
-
 void Model::Draw(Shader &shader) {
-
-    /*
-     polygon mode
-
-     mode
-        - GL_POINT
-        - GL_LINE
-        - GL_FILL
-     face
-        - GL_FRONT
-        - GL_BACK
-        - GL_FRONT_AND_BACK
-     */
-    
-    //glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
-
-    glPolygonMode(polygon_mode, polygon_face); 
-    //glEnable(GL_DEPTH_TEST);
     for(unsigned int i = 0; i < meshes.size(); i++) {
         meshes[i].Draw(shader);
     }

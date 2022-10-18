@@ -86,59 +86,27 @@ void UI::onUpdate() {
         m_resetScene();
     } 
 
+    if (ImGui::TreeNode("Renderer")) {
+        if (ImGui::Checkbox("Wireframe", &p_renderer->wireframe)) {
+            p_renderer->updateWireframe();
+        }
+        
+        if (ImGui::Checkbox("Depth Test", &p_renderer->depth_test)) {
+            if (p_renderer->depth_test) {
+                p_renderer->enableFeature(GL_DEPTH_TEST);
+            } else {
+                p_renderer->disableFeature(GL_DEPTH_TEST);
+            }
+        }
+
+        ImGui::TreePop();
+    }
+
     // each model
     for (int i = 0; i < scene_models->size(); i++) {
         Model *current_model = scene_models->at(i);
         
         ImGui::Begin(current_model->model_id.c_str());
-
-        if (ImGui::TreeNode("Model Settings")) {
-            const char *modes[] = {"GL_FILL", "GL_LINE", "GL_POINT"};
-            static int current_mode = 0;
-            ImGui::Combo("Model mode", &current_mode, modes, IM_ARRAYSIZE(modes));
-
-            switch (current_mode) {
-                case 0:
-                    current_model->polygon_mode = GL_FILL;
-                    break;
-                case 1:
-                    current_model->polygon_mode = GL_LINE;
-                    break;
-                case 2:
-                    current_model->polygon_mode = GL_POINT;
-                    break;
-                default:
-                    current_model->polygon_mode = GL_FILL;
-            }
-
-            const char *faces[] = {"GL_FRONT_AND_BACK", "GL_FRONT", "GL_BACK"};
-            static int current_face = 0;
-            ImGui::Combo("Model face", &current_face, faces, IM_ARRAYSIZE(faces));
-            
-            switch (current_mode) {
-                case 0:
-                    current_model->polygon_face = GL_FRONT_AND_BACK;
-                    break;
-                case 1:
-                    current_model->polygon_face = GL_FRONT;
-                    break;
-                case 2:
-                    current_model->polygon_face = GL_BACK;
-                    break;
-                default:
-                    current_model->polygon_face = GL_FRONT_AND_BACK;
-            }
-
-            if (ImGui::Checkbox("GL_DEPTH_TEST", &current_model->depth_test)) {
-                if (current_model->depth_test) {
-                    current_model->enableFeature(GL_DEPTH_TEST);
-                } else {
-                    current_model->disableFeature(GL_DEPTH_TEST);
-                }
-            }
-            
-            ImGui::TreePop();
-        }
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;

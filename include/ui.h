@@ -9,6 +9,7 @@
 
 #include "../include/window.h"
 #include "../include/model.h"
+#include "../include/renderer.h"
 
 #include "../src/ui/ui_model.h"
 
@@ -32,9 +33,8 @@ class UI {
         double *p_ms;
 
         std::vector<Model*> *scene_models;
-        
-        const char *listbox_items;
 
+        Renderer *p_renderer;
     private:
         typedef void (*void_function)();
         typedef void (*void_one_param_function)(std::string id);

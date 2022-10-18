@@ -29,6 +29,7 @@ void init () {
     state.ms = 0.0;
 
     state.ui->scene_models = &state.scene->models;
+    state.ui->p_renderer = state.renderer;
 }
 
 void tick() {
