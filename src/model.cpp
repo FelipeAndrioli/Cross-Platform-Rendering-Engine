@@ -14,11 +14,22 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
 
     polygon_mode = GL_FILL;
     polygon_face = GL_FRONT_AND_BACK;
+    depth_test = true;
+
+    enableFeature(GL_DEPTH_TEST);
 }
 
 Model::~Model() {
     std::cout << "Destroying Model..." << std::endl;
     delete model_transformations;
+}
+
+void Model::enableFeature(GLenum feature) {
+    glEnable(feature);
+}
+
+void Model::disableFeature(GLenum feature) {
+    glDisable(feature);
 }
 
 void Model::Draw(Shader &shader) {
@@ -39,7 +50,7 @@ void Model::Draw(Shader &shader) {
     //glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
 
     glPolygonMode(polygon_mode, polygon_face); 
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
     for(unsigned int i = 0; i < meshes.size(); i++) {
         meshes[i].Draw(shader);
     }

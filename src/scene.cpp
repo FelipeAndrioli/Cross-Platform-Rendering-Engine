@@ -124,6 +124,7 @@ void Scene::draw(Camera *TheCamera) {
             glm::vec3(0.0f, 0.0f, 1.0f));
 
         SceneShader->setMat4("model", model);
+
         models[i]->Draw(*SceneShader);
     }
 }

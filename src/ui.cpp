@@ -91,32 +91,84 @@ void UI::onUpdate() {
         Model *current_model = scene_models->at(i);
         
         ImGui::Begin(current_model->model_id.c_str());
-        
-        std::string t_label_x = "Translation x " + current_model->model_id;
-        std::string t_label_y = "Translation y " + current_model->model_id;
-        std::string t_label_z = "Translation z " + current_model->model_id;
-        
-        std::string s_label = "Scalation " + current_model->model_id;
 
-        std::string r_label_x = "Rotation x " + current_model->model_id;
-        std::string r_label_y = "Rotation y " + current_model->model_id;
-        std::string r_label_z = "Rotation z " + current_model->model_id;
-      
-        ImGui::SliderFloat(t_label_x.c_str(), 
-            &current_model->model_transformations->translation.x, -50.0f, 50.0f);
-        ImGui::SliderFloat(t_label_y.c_str(), 
-            &current_model->model_transformations->translation.y, -50.0f, 50.0f);
-        ImGui::SliderFloat(t_label_z.c_str(), 
-            &current_model->model_transformations->translation.z, -50.0f, 50.0f);
-        ImGui::SliderFloat(s_label.c_str(), &current_model->scale_handler, 
-            0.0f, 3.0f);
-        ImGui::SliderFloat(r_label_x.c_str(), 
-            &current_model->model_transformations->rotation.x, -10.0f, 10.0f);
-        ImGui::SliderFloat(r_label_y.c_str(), 
-            &current_model->model_transformations->rotation.y, -10.0f, 10.0f);
-        ImGui::SliderFloat(r_label_z.c_str(), 
-            &current_model->model_transformations->rotation.z, -10.0f, 10.0f);
+        if (ImGui::TreeNode("Model Settings")) {
+            const char *modes[] = {"GL_FILL", "GL_LINE", "GL_POINT"};
+            static int current_mode = 0;
+            ImGui::Combo("Model mode", &current_mode, modes, IM_ARRAYSIZE(modes));
+
+            switch (current_mode) {
+                case 0:
+                    current_model->polygon_mode = GL_FILL;
+                    break;
+                case 1:
+                    current_model->polygon_mode = GL_LINE;
+                    break;
+                case 2:
+                    current_model->polygon_mode = GL_POINT;
+                    break;
+                default:
+                    current_model->polygon_mode = GL_FILL;
+            }
+
+            const char *faces[] = {"GL_FRONT_AND_BACK", "GL_FRONT", "GL_BACK"};
+            static int current_face = 0;
+            ImGui::Combo("Model face", &current_face, faces, IM_ARRAYSIZE(faces));
+            
+            switch (current_mode) {
+                case 0:
+                    current_model->polygon_face = GL_FRONT_AND_BACK;
+                    break;
+                case 1:
+                    current_model->polygon_face = GL_FRONT;
+                    break;
+                case 2:
+                    current_model->polygon_face = GL_BACK;
+                    break;
+                default:
+                    current_model->polygon_face = GL_FRONT_AND_BACK;
+            }
+
+            if (ImGui::Checkbox("GL_DEPTH_TEST", &current_model->depth_test)) {
+                if (current_model->depth_test) {
+                    current_model->enableFeature(GL_DEPTH_TEST);
+                } else {
+                    current_model->disableFeature(GL_DEPTH_TEST);
+                }
+            }
+            
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Transformations")) {
+            std::string t_label_x = "Translation x " + current_model->model_id;
+            std::string t_label_y = "Translation y " + current_model->model_id;
+            std::string t_label_z = "Translation z " + current_model->model_id;
+            
+            std::string s_label = "Scalation " + current_model->model_id;
+
+            std::string r_label_x = "Rotation x " + current_model->model_id;
+            std::string r_label_y = "Rotation y " + current_model->model_id;
+            std::string r_label_z = "Rotation z " + current_model->model_id;
+          
+            ImGui::SliderFloat(t_label_x.c_str(), 
+                &current_model->model_transformations->translation.x, -50.0f, 50.0f);
+            ImGui::SliderFloat(t_label_y.c_str(), 
+                &current_model->model_transformations->translation.y, -50.0f, 50.0f);
+            ImGui::SliderFloat(t_label_z.c_str(), 
+                &current_model->model_transformations->translation.z, -50.0f, 50.0f);
+            ImGui::SliderFloat(s_label.c_str(), &current_model->scale_handler, 
+                0.0f, 3.0f);
+            ImGui::SliderFloat(r_label_x.c_str(), 
+                &current_model->model_transformations->rotation.x, -10.0f, 10.0f);
+            ImGui::SliderFloat(r_label_y.c_str(), 
+                &current_model->model_transformations->rotation.y, -10.0f, 10.0f);
+            ImGui::SliderFloat(r_label_z.c_str(), 
+                &current_model->model_transformations->rotation.z, -10.0f, 10.0f);
         
+            ImGui::TreePop();
+        }
+
         if (ImGui::Button("Delete model")) {
             m_deleteModel(current_model->model_id);  
         }

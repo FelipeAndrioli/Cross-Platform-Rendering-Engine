@@ -35,6 +35,8 @@ class Model {
        
         std::string model_id;
 
+        void enableFeature(GLenum feature);
+        void disableFeature(GLenum feature);
         void Draw(Shader &shader);
 
         Transformations *model_transformations;
@@ -42,6 +44,7 @@ class Model {
 
         GLenum polygon_mode;
         GLenum polygon_face;
+        bool depth_test;
     private:
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);
