@@ -39,6 +39,9 @@ class Model {
 
         Transformations *model_transformations;
         float scale_handler;
+
+        GLenum polygon_mode;
+        GLenum polygon_face;
     private:
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);

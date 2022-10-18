@@ -55,9 +55,6 @@ void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
         TheCamera->processMouseMovement(x_offset, y_offset);        
     } 
 
-    glPolygonMode(GL_FILL, GL_FRONT_AND_BACK);
-    glEnable(GL_DEPTH_TEST);
-
     if (keyboard.keys[GLFW_KEY_W].pressed) 
         TheCamera->processKeyboard(FORWARD, delta_time);
     
