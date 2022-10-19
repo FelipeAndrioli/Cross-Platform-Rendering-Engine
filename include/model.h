@@ -7,14 +7,16 @@
 #include "../libs/assimp/include/assimp/Importer.hpp"
 #include "../libs/assimp/include/assimp/scene.h"
 #include "../libs/assimp/include/assimp/postprocess.h"
+#include "../libs/glm/glm/glm.hpp"
+#include "../libs/glm/glm/gtc/matrix_transform.hpp"
 
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
 #include "../src/util/transformations.h"
+#include "../src/util/lighting.h"
 
-#include "../src/ui/ui_model.h"
-
+#include "camera.h"
 #include "mesh.h"
 
 #define STB_IMAGE_STATIC
@@ -38,9 +40,12 @@ class Model {
         void enableFeature(GLenum feature);
         void disableFeature(GLenum feature);
         void updateWireframe();
-        void Draw(Shader &shader);
+        void onUpdate(Shader *shader, Camera *TheCamera);
+        void Draw(Shader &shader, Camera *TheCamera);
 
         Transformations *model_transformations;
+        Light *light;
+
         float scale_handler;
     private:
         void loadModel(std::string path);

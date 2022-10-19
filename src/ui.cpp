@@ -128,6 +128,13 @@ void UI::onUpdate() {
             ImGui::TreePop();
         }
 
+        if (ImGui::TreeNode("Lighting")) {
+            ImGui::SliderFloat("Ambient", &current_model->light->ambient, 0.0f, 1.0f);
+            ImGui::SliderFloat("Diffuse", &current_model->light->diffuse, 0.0f, 1.0f);
+            ImGui::SliderFloat("Specular", &current_model->light->specular, 0.0f, 1.0f);
+            ImGui::TreePop();
+        }
+
         if (ImGui::Button("Delete model")) {
             p_scene->deleteModel(current_model->model_id);
         }

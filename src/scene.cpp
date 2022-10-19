@@ -112,31 +112,8 @@ void Scene::deleteModel(std::string id) {
 }
 
 void Scene::draw(Camera *TheCamera) {
-
     for (int i = 0; i < models.size(); i++) {
-        SceneShader->use();
-        glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
-            (float)800/(float)600, 0.1f, 100.0f);
-        glm::mat4 view = TheCamera->getViewMatrix();
-     
-        SceneShader->setMat4("projection", projection);
-        SceneShader->setMat4("view", view);
-
-        glm::mat4 model = glm::mat4(1.0f);
-
-        models[i]->model_transformations->scalation = glm::vec3(models[i]->scale_handler);
-        model = glm::scale(model, models[i]->model_transformations->scalation);
-        model = glm::translate(model, models[i]->model_transformations->translation);
-        model = glm::rotate(model, models[i]->model_transformations->rotation.x, 
-            glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, models[i]->model_transformations->rotation.y, 
-            glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, models[i]->model_transformations->rotation.z, 
-            glm::vec3(0.0f, 0.0f, 1.0f));
-
-        SceneShader->setMat4("model", model);
-
-        models[i]->Draw(*SceneShader);
+        models[i]->Draw(*SceneShader, TheCamera);
     }
 }
 

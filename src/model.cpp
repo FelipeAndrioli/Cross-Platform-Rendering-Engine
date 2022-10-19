@@ -11,14 +11,49 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
     model_transformations->translation = glm::vec3(0.0f, 0.0f, 0.0f);
     model_transformations->scalation = glm::vec3(scale_handler);
     model_transformations->rotation = glm::vec3(0.0f);
+
+    light = new Light();
+    light->ambient = 0.5f;
+    light->diffuse = 0.0f;
+    light->specular = 0.0f;
 }
 
 Model::~Model() {
     std::cout << "Destroying Model..." << std::endl;
     delete model_transformations;
+    delete light;
 }
 
-void Model::Draw(Shader &shader) {
+void Model::onUpdate(Shader *shader, Camera *TheCamera) {
+    shader->use();
+    glm::mat4 projection = glm::perspective(TheCamera->Zoom, 
+        (float)800/(float)600, 0.1f, 100.0f);
+    glm::mat4 view = TheCamera->getViewMatrix();
+ 
+    shader->setMat4("projection", projection);
+    shader->setMat4("view", view);
+
+    glm::mat4 model = glm::mat4(1.0f);
+
+    model_transformations->scalation = glm::vec3(scale_handler);
+    model = glm::scale(model, model_transformations->scalation);
+    model = glm::translate(model, model_transformations->translation);
+    model = glm::rotate(model, model_transformations->rotation.x, 
+        glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, model_transformations->rotation.y, 
+        glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, model_transformations->rotation.z, 
+        glm::vec3(0.0f, 0.0f, 1.0f));
+
+    shader->setMat4("model", model);
+
+    shader->setFloat("light.ambient", light->ambient);
+    shader->setFloat("light.diffuse", light->diffuse);
+    shader->setFloat("light.specular", light->specular);
+}
+
+void Model::Draw(Shader &shader, Camera *TheCamera) {
+    onUpdate(&shader, TheCamera);
     for(unsigned int i = 0; i < meshes.size(); i++) {
         meshes[i].Draw(shader);
     }
@@ -187,6 +222,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType
         if (!skip) {
             Texture texture;
             texture.id = TextureFromFile(util_str.C_Str(), directory);
+            std::cout << util_str.C_Str() << std::endl;
             texture.type = typeName;
             texture.path = util_str.C_Str();
             textures.push_back(texture);
