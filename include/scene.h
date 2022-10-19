@@ -22,6 +22,7 @@ class Scene {
         ~Scene();
         void draw(Camera *TheCamera);
         void update(Camera *TheCamera);
+        void updateShaders();
         static void resetSceneModels();
         static void addModel(const char *raw_model_path, std::string model_id, 
             bool flip_texture);
@@ -29,8 +30,9 @@ class Scene {
         inline static std::vector<Model*> models;
         inline static std::vector<Shader*> shaders;
 
-        // these need to be removed
         Shader *SceneShader;
+        std::string shader_path;
+
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
 

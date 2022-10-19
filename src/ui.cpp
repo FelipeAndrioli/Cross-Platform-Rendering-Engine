@@ -86,6 +86,10 @@ void UI::onUpdate() {
         m_resetScene();
     } 
 
+    if (ImGui::Button("Update Shaders")) {
+        p_scene->updateShaders();
+    }
+
     if (ImGui::TreeNode("Renderer")) {
         if (ImGui::Checkbox("Wireframe", &p_renderer->wireframe)) {
             p_renderer->updateWireframe();

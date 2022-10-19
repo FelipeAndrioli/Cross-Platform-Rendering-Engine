@@ -30,6 +30,7 @@ void init () {
 
     state.ui->scene_models = &state.scene->models;
     state.ui->p_renderer = state.renderer;
+    state.ui->p_scene = state.scene;
 }
 
 void tick() {

@@ -35,6 +35,7 @@ class UI {
         std::vector<Model*> *scene_models;
 
         Renderer *p_renderer;
+        Scene *p_scene;
     private:
         typedef void (*void_function)();
         typedef void (*void_one_param_function)(std::string id);
