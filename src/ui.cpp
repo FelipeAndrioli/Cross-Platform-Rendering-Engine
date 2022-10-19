@@ -1,9 +1,15 @@
 #include "../include/ui.h"
 
-UI::UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(), 
-    void(*addModel)(const char *model_path, std::string model_id, 
-    bool flip_texture), void(*deleteModel)(std::string id)) {
+UI::UI() {
 
+}
+
+UI::~UI() {
+    onDestroy();
+    std::cout << "Destroying UI..." << std::endl;
+}
+
+void UI::onInit() {
     std::cout << "Initializing UI" << std::endl;
 
     IMGUI_CHECKVERSION();
@@ -11,21 +17,10 @@ UI::UI(Window *window, void(*swapModes)(), void(*resetSceneModels)(),
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window->m_window, true);
+    ImGui_ImplGlfw_InitForOpenGL(p_window->m_window, true);
     ImGui_ImplOpenGL3_Init("#version 440");
 
     flip_texture = true;
-
-    m_swap = swapModes;
-    m_resetScene = resetSceneModels;
-    m_addModel = addModel;
-    m_deleteModel = deleteModel;
-
-}
-
-UI::~UI() {
-    onDestroy();
-    std::cout << "Destroying UI..." << std::endl;
 }
 
 void UI::onUpdate() {
@@ -49,17 +44,15 @@ void UI::onUpdate() {
     ImGui::TextUnformatted(handler.c_str());
 
     if (ImGui::Button("Debug")) {
-        std::cout << "Objects amount -> " << scene_models->size() << std::endl;
+        std::cout << "Objects amount -> " << p_scene->models.size() << std::endl;
     }
 
-    ImGui::SliderFloat("Clear Color R", window_clear_color_r, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color G", window_clear_color_g, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color B", window_clear_color_b, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color R", &p_window->clear_color_r, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color G", &p_window->clear_color_g, 0.0f, 1.0f);
+    ImGui::SliderFloat("Clear Color B", &p_window->clear_color_b, 0.0f, 1.0f);
 
     static char t_model_path[128] = "";
     static char t_model_id[128] = "";
-    //static char v_shader_path[128] = "";
-    //static char f_shader_path[128] = "";
 
     ImGui::InputText("Model id", t_model_id, IM_ARRAYSIZE(t_model_id));
     ImGui::InputText("Model path", t_model_path, IM_ARRAYSIZE(t_model_path));
@@ -74,16 +67,11 @@ void UI::onUpdate() {
         std::cout << "Loading model..." << std::endl;
         const char *model_path = t_model_path;
         const char *model_id = t_model_id;
-        m_addModel(model_path, model_id, flip_texture);
-    }
-
-    if (ImGui::Button("Swap modes")) {
-        std::cout << "Swaping between modes..." << std::endl;
-        m_swap();
+        p_scene->addModel(model_path, model_id, flip_texture);
     }
 
     if (ImGui::Button("Reset Scene Models")) {
-        m_resetScene();
+        p_scene->resetSceneModels();
     } 
 
     if (ImGui::Button("Update Shaders")) {
@@ -102,13 +90,12 @@ void UI::onUpdate() {
                 p_renderer->disableFeature(GL_DEPTH_TEST);
             }
         }
-
         ImGui::TreePop();
     }
 
     // each model
-    for (int i = 0; i < scene_models->size(); i++) {
-        Model *current_model = scene_models->at(i);
+    for (int i = 0; i < p_scene->models.size(); i++) {
+        Model *current_model = p_scene->models.at(i);
         
         ImGui::Begin(current_model->model_id.c_str());
 
@@ -142,9 +129,8 @@ void UI::onUpdate() {
         }
 
         if (ImGui::Button("Delete model")) {
-            m_deleteModel(current_model->model_id);  
+            p_scene->deleteModel(current_model->model_id);
         }
-
         ImGui::End();
     }
     // each model end
@@ -159,13 +145,4 @@ void UI::onDestroy() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-}
-
-bool UI::model_getter(void *data, int index, const char** output) {
-    Model *models = (Model*)data;
-    Model &current_model = models[index];
-     
-    *output = current_model.model_id.c_str();
-
-    return true;
 }

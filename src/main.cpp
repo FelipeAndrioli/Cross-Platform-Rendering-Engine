@@ -4,19 +4,12 @@
 
 State state;
 
-void swapModes();
-
-void init () {
+void init() {
     state.config_mode = false;
     state.rendering_type = SCENE;
     state.scene = new Scene(state.rendering_type);
     state.renderer = new Renderer();
-    state.ui = new UI(state.window, swapModes, state.scene->resetSceneModels,
-        state.scene->addModel, state.scene->deleteModel);
-
-    state.ui->window_clear_color_r = &state.window->clear_color_r;
-    state.ui->window_clear_color_g = &state.window->clear_color_g;
-    state.ui->window_clear_color_b = &state.window->clear_color_b;
+    state.ui = new UI();
    
     state.ui->p_current_frame_time = &state.current_frame_time;    
     state.ui->p_last_frame_time = &state.last_frame_time;    
@@ -28,9 +21,11 @@ void init () {
     state.fps = 0.0;
     state.ms = 0.0;
 
-    state.ui->scene_models = &state.scene->models;
+    state.ui->p_window = state.window;
     state.ui->p_renderer = state.renderer;
     state.ui->p_scene = state.scene;
+
+    state.ui->onInit();
 }
 
 void tick() {
@@ -86,10 +81,6 @@ void destroy() {
     delete state.renderer;
     delete state.ui;
     delete state.window;
-}
-
-void swapModes() {
-    std::cout << "Work in progress" << std::endl;
 }
 
 int main() {
