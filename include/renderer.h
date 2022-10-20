@@ -23,6 +23,8 @@ class Renderer {
         void enableFeature(GLenum feature);
         void disableFeature(GLenum feature);
         void updateWireframe();
+        void updateCamera(Keyboard keyboard, Mouse *mouse, float delta_time,
+            float time);
         void draw(Scene *CurrentScene);
         void update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse, 
             float delta_time, float time);

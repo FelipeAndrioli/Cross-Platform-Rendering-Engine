@@ -50,14 +50,9 @@ void Renderer::updateWireframe() {
     }
 }
 
-void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
-    float delta_time, float time) {
-
-    glm::vec3 res = glm::vec3(800, 600, 0);
-
-    CurrentScene->SceneShader->setFloat("global.iTime", time);
-    CurrentScene->SceneShader->setVec3("iResolution", res);
-
+void Renderer::updateCamera(Keyboard keyboard, Mouse *mouse, float delta_time,
+    float time) {
+    
     if (mouse->on_screen == GLFW_TRUE) {
         float new_x = static_cast<float>(mouse->x);
         float new_y = static_cast<float>(mouse->y);
@@ -88,6 +83,16 @@ void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
     
     if (keyboard.keys[GLFW_KEY_D].pressed)  
         TheCamera->processKeyboard(RIGHT, delta_time);
+}
+
+void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
+    float delta_time, float time) {
+
+    glm::vec3 res = glm::vec3(800, 600, 0);
+    CurrentScene->SceneShader->setFloat("global.iTime", time);
+    CurrentScene->SceneShader->setVec3("iResolution", res);
+   
+    updateCamera(keyboard, mouse, delta_time, time);
 }
 
 void Renderer::draw(Scene *CurrentScene) {
