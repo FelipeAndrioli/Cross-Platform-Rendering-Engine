@@ -18,7 +18,7 @@
 
 class Scene {
     public:
-        Scene(RenderingType rendering_type);
+        Scene();
         ~Scene();
         void draw(Camera *TheCamera);
         void update(Camera *TheCamera);
@@ -32,12 +32,6 @@ class Scene {
 
         Shader *SceneShader;
         std::string shader_path;
-
-        std::vector<float> vertices;
-        std::vector<unsigned int> indices;
-
-        bool wireframe;
-        bool depth_test;
     private:
         static std::string processPathInput(const char *input);
 };

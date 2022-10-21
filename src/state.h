@@ -24,6 +24,4 @@ class State {
         // End timing
 
         bool config_mode;
-
-        RenderingType rendering_type;
 };

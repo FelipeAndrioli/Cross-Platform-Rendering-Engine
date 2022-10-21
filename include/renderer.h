@@ -18,7 +18,6 @@
 class Renderer {
     public:
         Renderer();
-        Renderer(Scene *CurrentScene);
         ~Renderer();
         void enableFeature(GLenum feature);
         void disableFeature(GLenum feature);

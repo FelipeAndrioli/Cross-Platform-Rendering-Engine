@@ -6,8 +6,7 @@ State state;
 
 void init() {
     state.config_mode = false;
-    state.rendering_type = SCENE;
-    state.scene = new Scene(state.rendering_type);
+    state.scene = new Scene();
     state.renderer = new Renderer();
     state.ui = new UI();
    

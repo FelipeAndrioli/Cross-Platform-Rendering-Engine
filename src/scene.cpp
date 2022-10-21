@@ -1,30 +1,17 @@
 #include "../include/scene.h"
 
-Scene::Scene(RenderingType rendering_type) {
+Scene::Scene() {
+    std::cout << "Rendering Scene..." << std::endl;
 
-    if (rendering_type == PIXEL) {
-        std::cout << "Rendering Pixels..." << std::endl;
+    std::filesystem::path current_path = std::filesystem::current_path();
+    
+    shader_path = current_path.parent_path().string();
+    shader_path += "/src/shaders/scene_rendering/";
 
-        SceneShader = new Shader(PixelRendering::pixel_rendering_vertex, 
-            PixelRendering::pixel_rendering_fragment, nullptr);
+    std::string v_shader = shader_path + "shader.vs";
+    std::string f_shader = shader_path + "shader.fs";
 
-        vertices = PixelRendering::scene_vertices;
-        indices = PixelRendering::scene_indices;
-    }
-
-    if (rendering_type == SCENE) {
-        std::cout << "Rendering Scene..." << std::endl;
-
-        std::filesystem::path current_path = std::filesystem::current_path();
-        
-        shader_path = current_path.parent_path().string();
-        shader_path += "/src/shaders/scene_rendering/";
-
-        std::string v_shader = shader_path + "shader.vs";
-        std::string f_shader = shader_path + "shader.fs";
-
-        SceneShader = new Shader(v_shader.c_str(), f_shader.c_str(), nullptr);
-    }
+    SceneShader = new Shader(v_shader.c_str(), f_shader.c_str(), nullptr);
 }
 
 std::string Scene::processPathInput(const char *input) {
