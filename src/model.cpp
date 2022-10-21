@@ -13,7 +13,7 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
     model_transformations->rotation = glm::vec3(0.0f);
 
     light = new Light();
-    light->ambient = 0.5f;
+    light->ambient = 1.0f;
     light->diffuse = 0.0f;
     light->specular = 0.0f;
 }
@@ -50,13 +50,6 @@ void Model::onUpdate(Shader *shader, Camera *TheCamera) {
     shader->setFloat("light.ambient", light->ambient);
     shader->setFloat("light.diffuse", light->diffuse);
     shader->setFloat("light.specular", light->specular);
-}
-
-void Model::Draw(Shader &shader, Camera *TheCamera) {
-    onUpdate(&shader, TheCamera);
-    for(unsigned int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shader);
-    }
 }
 
 void Model::loadModel(std::string path) {

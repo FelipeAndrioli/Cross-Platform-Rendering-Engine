@@ -28,25 +28,21 @@ class Model {
         Model(const char *path, std::string id, bool flip_texture);
         ~Model();
         
+        std::string model_id;
         std::vector<Mesh> meshes;
         std::vector<Texture> textures_loaded;
         std::string directory;
        
         bool gamma_correction;
         bool stbi_flip_vertically; 
-       
-        std::string model_id;
 
-        void enableFeature(GLenum feature);
-        void disableFeature(GLenum feature);
-        void updateWireframe();
+        float scale_handler;
+        
         void onUpdate(Shader *shader, Camera *TheCamera);
-        void Draw(Shader &shader, Camera *TheCamera);
 
         Transformations *model_transformations;
         Light *light;
 
-        float scale_handler;
     private:
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);

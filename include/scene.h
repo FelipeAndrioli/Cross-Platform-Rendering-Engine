@@ -20,9 +20,8 @@ class Scene {
     public:
         Scene();
         ~Scene();
-        void draw(Camera *TheCamera);
         void update(Camera *TheCamera);
-        void updateShaders();
+        void reloadShaders();
         static void resetSceneModels();
         static void addModel(const char *raw_model_path, std::string model_id, 
             bool flip_texture);

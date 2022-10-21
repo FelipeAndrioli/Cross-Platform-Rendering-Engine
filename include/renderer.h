@@ -25,8 +25,10 @@ class Renderer {
         void updateCamera(Keyboard keyboard, Mouse *mouse, float delta_time,
             float time);
         void draw(Scene *CurrentScene);
+        void render(Shader *shader, unsigned int VAO, unsigned int indices_size);
         void update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse, 
             float delta_time, float time);
+        void prepare(Scene *CurrentScene, Camera *TheCamera);
         Camera *TheCamera;
 
         bool wireframe;

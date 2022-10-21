@@ -78,5 +78,49 @@ void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
 }
 
 void Renderer::draw(Scene *CurrentScene) {
-    CurrentScene->draw(TheCamera);
+    //CurrentScene->draw(TheCamera);
+    prepare(CurrentScene, TheCamera);
+}
+
+void Renderer::render(Shader *shader, unsigned int VAO, unsigned int indices_size) {
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices_size, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    glActiveTexture(GL_TEXTURE0);
+}
+
+void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
+    for (int i = 0; i < CurrentScene->models.size(); i++) {
+        Model *model = CurrentScene->models[i];
+
+        for (unsigned int j = 0; j < model->meshes.size(); j++) {
+            unsigned int diffuseNr = 1;
+            unsigned int specularNr = 1;
+            unsigned int normalNr = 1;
+            unsigned int heightNr = 1;
+
+            for (unsigned int k = 0; k < model->meshes[j].textures.size(); k++) {
+                glActiveTexture(GL_TEXTURE0 + k);
+
+                std::string number;
+                std::string name = model->meshes[j].textures[k].type;
+
+                if (name == "texture_diffuse") {
+                    number = std::to_string(diffuseNr++);
+                } else if (name == "texture_specular") {
+                    number = std::to_string(specularNr++);
+                } else if (name == "texture_normal") {
+                    number = std::to_string(normalNr++);
+                } else if (name == "texture_height") {
+                    number = std::to_string(heightNr++);
+                }
+
+                CurrentScene->SceneShader->setInt(("material." + name + number).c_str(), i);
+                glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
+            }
+            model->onUpdate(CurrentScene->SceneShader, TheCamera);
+            render(CurrentScene->SceneShader, model->meshes[j].VAO, 
+                model->meshes[j].indices.size());
+        }
+    }
 }

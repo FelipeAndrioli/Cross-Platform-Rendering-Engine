@@ -74,8 +74,8 @@ void UI::onUpdate() {
         p_scene->resetSceneModels();
     } 
 
-    if (ImGui::Button("Update Shaders")) {
-        p_scene->updateShaders();
+    if (ImGui::Button("Reload Shaders")) {
+        p_scene->reloadShaders();
     }
 
     if (ImGui::TreeNode("Renderer")) {
