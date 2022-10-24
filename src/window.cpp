@@ -6,6 +6,10 @@ void Window::framebuffer_size_callback(GLFWwindow *t_window, int width,
     // need to change the values of the window propertys as well
     glViewport(0, 0, width, height);
     glfwSetWindowSize(t_window, width, height);
+    
+    p_settings->resolution.x = width;
+    p_settings->resolution.y = height;
+
     std::cout << "Width -> " << width << " Height -> " << height << std::endl;
 }
 
@@ -56,19 +60,6 @@ Window::Window(void(*_init)(), void(*_update)(), void(*_destroy)()) {
     glfw_context_version_major = 4;
     opengl_profile = GLFW_OPENGL_CORE_PROFILE;
 
-    window_name = "Rendering Engine.exe";
-    window_width = 800;
-    window_height = 600;
-  
-    mouse = new Mouse();
-    mouse->x = 0.0f;
-    mouse->y = 0.0f;
-    mouse->z = 0.0f;
-    mouse->last_x = window_width / 2.0f;
-    mouse->last_y = window_height / 2.0f;
-    mouse->on_screen = GLFW_FALSE;
-    mouse->first_mouse = true;
-    
     clear_color_r = 0.5f;
     clear_color_g = 0.5f;
     clear_color_b = 0.5f;
@@ -77,9 +68,6 @@ Window::Window(void(*_init)(), void(*_update)(), void(*_destroy)()) {
     m_init = _init;
     m_destroy = _destroy;
 
-    for (int i = 0; i < GLFW_KEY_LAST; i++) {
-        keyboard.keys[i].pressed = false;
-    }
 }
 
 Window::~Window() {
@@ -95,8 +83,8 @@ void Window::window_create() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glfw_context_version_major);
     glfwWindowHint(GLFW_OPENGL_PROFILE, opengl_profile);
     
-    m_window = glfwCreateWindow(window_width, window_height, window_name, 
-        nullptr, nullptr);
+    m_window = glfwCreateWindow(p_settings->resolution.x, p_settings->resolution.y,
+        p_settings->window_title, nullptr, nullptr);
 
     if (m_window == nullptr) {
         std::cout << "Failed initializing window!" << std::endl;
@@ -112,7 +100,7 @@ void Window::window_create() {
         return;
     }
 
-    glViewport(0, 0, window_width, window_height);
+    glViewport(0, 0, p_settings->resolution.x, p_settings->resolution.y);
     glfwSetWindowPos(m_window, 100, 100);
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     glfwSetKeyCallback(m_window, key_callback);
@@ -120,7 +108,26 @@ void Window::window_create() {
     glfwSetCursorEnterCallback(m_window, cursor_enter_callback);
 
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     m_init();
+    initialize_mouse(); 
+}
+
+void Window::initialize_mouse() {
+    mouse = new Mouse();
+    mouse->x = 0.0f;
+    mouse->y = 0.0f;
+    mouse->z = 0.0f;
+    mouse->last_x = p_settings->resolution.x / 2.0f;
+    mouse->last_y = p_settings->resolution.y / 2.0f;
+    mouse->on_screen = GLFW_FALSE;
+    mouse->first_mouse = true;
+}
+
+void Window::initialize_keyboard() {
+    for (int i = 0; i < GLFW_KEY_LAST; i++) {
+        keyboard.keys[i].pressed = false;
+    }
 }
 
 void Window::main_loop() {
@@ -138,7 +145,7 @@ void Window::main_loop() {
     }
 }
 
-    void Window::resize(int new_width, int new_height) {
+void Window::resize(int new_width, int new_height) {
     framebuffer_size_callback(m_window, new_width, new_height);
 }
 

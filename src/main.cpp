@@ -9,7 +9,7 @@ void init() {
     state.scene = new Scene();
     state.renderer = new Renderer();
     state.ui = new UI();
-   
+
     state.ui->p_current_frame_time = &state.current_frame_time;    
     state.ui->p_last_frame_time = &state.last_frame_time;    
     state.ui->p_delta_time = &state.delta_time; 
@@ -83,6 +83,13 @@ void destroy() {
 }
 
 int main() {
+    state.settings = new Settings();
+
+    state.settings->window_title = "Rendering Engine.exe";
+    state.settings->resolution.x = 1600;
+    state.settings->resolution.y = 900;
+    state.window->p_settings = state.settings;
+
     state.window = new Window(init, update, destroy);
     state.window->main_loop();
 

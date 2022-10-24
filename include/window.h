@@ -10,14 +10,13 @@
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
+#include "../src/util/settings.h"
 #include "../src/util/keyboard.h"
 #include "../src/util/mouse.h"
 
 /* TODO
  *
  * - Fix framebuffer_size_callback function
- * - Add key processing
- * - Add tick processing
  *
  * */
 
@@ -28,13 +27,15 @@ class Window {
         int glfw_context_version_minor;
         int glfw_context_version_major;
         int opengl_profile;
-        int window_width;
-        int window_height;
         const char *window_name;
         void window_create();
+        void initialize_mouse();
+        void initialize_keyboard();
+
         void_function m_init;
         void_function m_update;
         void_function m_destroy;
+        
         static void framebuffer_size_callback(GLFWwindow *t_window, int width, 
             int height);
         static void key_callback(GLFWwindow *t_window, int key, int scancode, 
@@ -55,4 +56,5 @@ class Window {
 
         inline static Keyboard keyboard;
         inline static Mouse *mouse;
+        inline static Settings *p_settings;
 };

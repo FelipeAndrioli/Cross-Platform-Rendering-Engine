@@ -5,7 +5,7 @@
 #include "../include/renderer.h"
 #include "../include/scene.h"
 
-#include "./util/rendering_type.h"
+#include "./util/settings.h"
 
 class State {
     public:
@@ -13,6 +13,7 @@ class State {
         Renderer *renderer;
         UI *ui;
         Scene *scene;
+        Settings *settings;
 
         // Start timing
         double current_frame_time;
