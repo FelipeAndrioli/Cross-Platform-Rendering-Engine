@@ -54,6 +54,7 @@ void update() {
 
     state.renderer->update(
         state.scene, 
+        state.settings,
         state.window->keyboard, 
         state.window->mouse, 
         state.delta_time, 
@@ -88,6 +89,9 @@ int main() {
     state.settings->window_title = "Rendering Engine.exe";
     state.settings->resolution.x = 1600;
     state.settings->resolution.y = 900;
+    state.settings->near = 0.1f;
+    state.settings->far = 100.0f;
+
     state.window->p_settings = state.settings;
 
     state.window = new Window(init, update, destroy);

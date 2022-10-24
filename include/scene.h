@@ -14,13 +14,13 @@
 #include "../include/camera.h"
 
 #include "../src/scenes/pixel_rendering.h"
-#include "../src/util/rendering_type.h"
+#include "../src/util/settings.h"
 
 class Scene {
     public:
         Scene();
         ~Scene();
-        void update(Camera *TheCamera);
+        void update(Settings *settings, Camera *TheCamera);
         void reloadShaders();
         static void resetSceneModels();
         static void addModel(const char *raw_model_path, std::string model_id, 

@@ -7,6 +7,7 @@
 #include "../include/scene.h"
 #include "../include/camera.h"
 
+#include "../src/util/settings.h"
 #include "../src/util/camera_movement.h"
 #include "../src/util/keyboard.h"
 #include "../src/util/mouse.h"
@@ -26,8 +27,8 @@ class Renderer {
             float time);
         void draw(Scene *CurrentScene);
         void render(Shader *shader, unsigned int VAO, unsigned int indices_size);
-        void update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse, 
-            float delta_time, float time);
+        void update(Scene *CurrentScene, Settings *settings, Keyboard keyboard, 
+            Mouse *mouse, float delta_time, float time);
         void prepare(Scene *CurrentScene, Camera *TheCamera);
         Camera *TheCamera;
 

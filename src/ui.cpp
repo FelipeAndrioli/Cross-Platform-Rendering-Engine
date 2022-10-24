@@ -129,9 +129,9 @@ void UI::onUpdate() {
         }
 
         if (ImGui::TreeNode("Lighting")) {
-            ImGui::SliderFloat("Ambient", &current_model->light->ambient, 0.0f, 1.0f);
-            ImGui::SliderFloat("Diffuse", &current_model->light->diffuse, 0.0f, 1.0f);
-            ImGui::SliderFloat("Specular", &current_model->light->specular, 0.0f, 1.0f);
+            ImGui::SliderFloat("Ambient", &current_model->basic_light->ambient, 0.0f, 1.0f);
+            ImGui::SliderFloat("Diffuse", &current_model->basic_light->diffuse, 0.0f, 1.0f);
+            ImGui::SliderFloat("Specular", &current_model->basic_light->specular, 0.0f, 1.0f);
             ImGui::TreePop();
         }
 

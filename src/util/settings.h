@@ -9,4 +9,6 @@
 typedef struct {
     const char *window_title;
     glm::vec2 resolution; 
+    float near;
+    float far;
 } Settings;

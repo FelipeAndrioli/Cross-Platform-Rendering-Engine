@@ -67,14 +67,16 @@ void Renderer::updateCamera(Keyboard keyboard, Mouse *mouse, float delta_time,
         TheCamera->processKeyboard(RIGHT, delta_time);
 }
 
-void Renderer::update(Scene *CurrentScene, Keyboard keyboard, Mouse *mouse,
-    float delta_time, float time) {
+void Renderer::update(Scene *CurrentScene, Settings *settings, Keyboard keyboard, 
+    Mouse *mouse, float delta_time, float time) {
 
-    glm::vec3 res = glm::vec3(800, 600, 0);
+    glm::vec3 res = glm::vec3(settings->resolution.x, settings->resolution.y, 0);
     CurrentScene->SceneShader->setFloat("global.iTime", time);
     CurrentScene->SceneShader->setVec3("iResolution", res);
    
     updateCamera(keyboard, mouse, delta_time, time);
+
+    CurrentScene->update(settings, TheCamera);
 }
 
 void Renderer::draw(Scene *CurrentScene) {
@@ -118,7 +120,8 @@ void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
                 CurrentScene->SceneShader->setInt(("material." + name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
             }
-            model->onUpdate(CurrentScene->SceneShader, TheCamera);
+            //model->onUpdate(CurrentScene->SceneShader, TheCamera);
+            model->setUniforms(CurrentScene->SceneShader);
             render(CurrentScene->SceneShader, model->meshes[j].VAO, 
                 model->meshes[j].indices.size());
         }

@@ -31,9 +31,9 @@ std::string Scene::processPathInput(const char *input) {
     return s;
 }
 
-void Scene::update(Camera *TheCamera) {
+void Scene::update(Settings *settings, Camera *TheCamera) {
     for (int i = 0; i < models.size(); i++) {
-        models[i]->onUpdate(SceneShader, TheCamera); 
+        models[i]->onUpdate(settings, SceneShader, TheCamera); 
     }
 }
 

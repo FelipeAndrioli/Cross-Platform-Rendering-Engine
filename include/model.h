@@ -15,6 +15,7 @@
 
 #include "../src/util/transformations.h"
 #include "../src/util/lighting.h"
+#include "../src/util/settings.h"
 
 #include "camera.h"
 #include "mesh.h"
@@ -38,10 +39,12 @@ class Model {
 
         float scale_handler;
         
-        void onUpdate(Shader *shader, Camera *TheCamera);
+        void onUpdate(Settings *settings, Shader *shader, Camera *TheCamera);
+        void setUniforms(Shader *shader);
 
         Transformations *model_transformations;
-        Light *light;
+        TransformationsMatrices *transformations_matrices;
+        BasicLight *basic_light;
 
     private:
         void loadModel(std::string path);
