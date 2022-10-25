@@ -57,7 +57,7 @@ void UI::onUpdate() {
     ImGui::InputText("Model id", t_model_id, IM_ARRAYSIZE(t_model_id));
     ImGui::InputText("Model path", t_model_path, IM_ARRAYSIZE(t_model_path));
     ImGui::Checkbox("STBI Flip Vertically", &flip_texture);
-    
+   
     if (ImGui::Button("Add model")) {
         /* TODO
          *
@@ -68,6 +68,11 @@ void UI::onUpdate() {
         const char *model_path = t_model_path;
         const char *model_id = t_model_id;
         p_scene->addModel(model_path, model_id, flip_texture);
+    }
+    
+    if (ImGui::Button("Add custom model")) {
+        std::cout << "Loading custom model..." << std::endl;
+        p_scene->addCustomModel();
     }
 
     if (ImGui::Button("Reset Scene Models")) {
@@ -98,6 +103,10 @@ void UI::onUpdate() {
         Model *current_model = p_scene->models.at(i);
         
         ImGui::Begin(current_model->model_id.c_str());
+
+        if (ImGui::Button("Debug")) {
+            current_model->debug();
+        }
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;

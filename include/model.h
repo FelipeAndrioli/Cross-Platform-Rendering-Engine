@@ -26,6 +26,7 @@
 
 class Model {
     public:
+        Model();
         Model(const char *path, std::string id, bool flip_texture);
         ~Model();
         
@@ -45,6 +46,9 @@ class Model {
         Transformations *model_transformations;
         TransformationsMatrices *transformations_matrices;
         BasicLight *basic_light;
+        
+        void generateCubeVertices();
+        void debug();
 
     private:
         void loadModel(std::string path);
@@ -54,4 +58,5 @@ class Model {
             type, std::string typeName);
         unsigned int TextureFromFile(const char *path, const std::string 
                 &directory, bool gamma = false);
+        void onCreate();
 };

@@ -56,6 +56,12 @@ void Scene::addModel(const char *raw_model_path, std::string model_id,
     models.push_back(new_model);
 }
 
+void Scene::addCustomModel() {
+    Model *new_model = new Model();
+    new_model->model_id = "Cube";
+    models.push_back(new_model);
+}
+
 void Scene::resetSceneModels() {
     models.clear();
     shaders.clear();

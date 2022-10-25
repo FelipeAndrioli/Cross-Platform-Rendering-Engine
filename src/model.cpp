@@ -1,11 +1,20 @@
 #include "../include/model.h"
 
+Model::Model() {
+    // used to create custom models
+    generateCubeVertices();
+    onCreate();
+}
+
 Model::Model(const char *path, std::string id,bool flip_texture) {
 
     stbi_flip_vertically = flip_texture;
     model_id = id;
     loadModel(path);
+    onCreate();
+}
 
+void Model::onCreate() {
     model_transformations = new Transformations();
     scale_handler = 1.0f;
     model_transformations->translation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -53,6 +62,32 @@ void Model::onUpdate(Settings *settings, Shader *shader, Camera *TheCamera) {
     setUniforms(shader);
 }
 
+void Model::debug() {
+    std::cout << "Meshes size -> " << meshes.size() << std::endl;
+
+    for (int i = 0; i < meshes.size(); i++) {
+        for (int j = 0; j < meshes[i].vertices.size(); j++) {
+            std::cout << "Position" << std::endl;
+            std::cout << meshes[i].vertices[j].Position.x << " ";
+            std::cout << meshes[i].vertices[j].Position.y << " ";
+            std::cout << meshes[i].vertices[j].Position.z << " ";
+            std::cout << std::endl;
+
+            std::cout << "Normals" << std::endl;
+            std::cout << meshes[i].vertices[j].Normal.x << " ";
+            std::cout << meshes[i].vertices[j].Normal.y << " ";
+            std::cout << meshes[i].vertices[j].Normal.z << " ";
+            std::cout << std::endl;
+        }
+
+        std::cout << "Indices" << std::endl;
+        for (int j = 0; j < meshes[i].indices.size(); j++) {
+            std::cout << meshes[i].indices[j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 void Model::setUniforms(Shader *shader) {
     shader->use();
     shader->setMat4("projection", transformations_matrices->projection);
@@ -62,6 +97,101 @@ void Model::setUniforms(Shader *shader) {
     shader->setFloat("light.ambient", basic_light->ambient);
     shader->setFloat("light.diffuse", basic_light->diffuse);
     shader->setFloat("light.specular", basic_light->specular);
+}
+
+void Model::generateCubeVertices() {
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
+
+    /* TODO
+     *
+     * - Refactor all of this and make it automatic instead of hard coded
+     *      - Automate positions -> follow binary permutations seems to work
+     *      - Automate normals -> need to understand how these normals are calculated
+     *      - Automate indices -> need to understand how to generate automated indices
+     * - The normals might be wrong
+     *
+     * */
+
+    Vertex vertex;
+    vertex.Position = glm::vec3(-0.5f, -0.5f, 0.5f);    // 0
+    vertex.Normal = glm::vec3(1.0f, 0.0f, 0.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(0.5f, -0.5f, 0.5f);     // 1
+    vertex.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(-0.5f, 0.5f, 0.5f);     // 2
+    vertex.Normal = glm::vec3(1.0f, 0.0f, 0.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(0.5f, 0.5f, 0.5f);      // 3
+    vertex.Normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(-0.5f, -0.5f, -0.5f);   // 4
+    vertex.Normal = glm::vec3(0.0f, 0.0f, 1.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(0.5f, -0.5f, -0.5f);    // 5
+    vertex.Normal = glm::vec3(0.0f, -1.0f, 0.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(-0.5f, 0.5f, -0.5f);    // 6
+    vertex.Normal = glm::vec3(0.0f, 0.0f, -1.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+    vertex.Position = glm::vec3(0.5f, 0.5f, -0.5f);     // 7
+    vertex.Normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+    vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+    vertices.push_back(vertex);
+
+    indices.push_back(2);
+    indices.push_back(6);
+    indices.push_back(7);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(7);
+   
+    indices.push_back(0);
+    indices.push_back(4);
+    indices.push_back(5);
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(5);
+    
+    indices.push_back(0);
+    indices.push_back(2);
+    indices.push_back(6);
+    indices.push_back(0);
+    indices.push_back(4);
+    indices.push_back(6);
+
+    indices.push_back(1);
+    indices.push_back(3);
+    indices.push_back(7);
+    indices.push_back(1);
+    indices.push_back(5);
+    indices.push_back(7);
+
+    indices.push_back(0);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(3);
+
+    indices.push_back(4);
+    indices.push_back(6);
+    indices.push_back(7);
+    indices.push_back(4);
+    indices.push_back(5);
+    indices.push_back(7);
+
+    Mesh *new_mesh = new Mesh(vertices, indices, textures);
+    meshes.push_back(*new_mesh);
 }
 
 void Model::loadModel(std::string path) {
