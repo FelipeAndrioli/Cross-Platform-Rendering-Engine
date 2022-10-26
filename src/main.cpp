@@ -9,21 +9,21 @@ void init() {
     state.scene = new Scene();
     state.renderer = new Renderer();
     state.ui = new UI();
+    
+    state.frames = 0;
+    state.fps = 0.0;
+    state.ms = 0.0;
+
+    state.scene->p_shaders = &state.renderer->shaders;
 
     state.ui->p_current_frame_time = &state.current_frame_time;    
     state.ui->p_last_frame_time = &state.last_frame_time;    
     state.ui->p_delta_time = &state.delta_time; 
     state.ui->p_fps = &state.fps; 
     state.ui->p_ms = &state.ms; 
-
-    state.frames = 0;
-    state.fps = 0.0;
-    state.ms = 0.0;
-
     state.ui->p_window = state.window;
     state.ui->p_renderer = state.renderer;
     state.ui->p_scene = state.scene;
-
     state.ui->onInit();
 }
 

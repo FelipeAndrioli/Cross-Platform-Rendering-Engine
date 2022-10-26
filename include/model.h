@@ -40,12 +40,13 @@ class Model {
 
         float scale_handler;
         
-        void onUpdate(Settings *settings, Shader *shader, Camera *TheCamera);
+        void onUpdate(Settings *settings, Camera *TheCamera);
         void setUniforms(Shader *shader);
 
         Transformations *model_transformations;
         TransformationsMatrices *transformations_matrices;
         BasicLight *basic_light;
+        Shader *attached_shader;
         
         void generateCubeVertices();
         void debug();

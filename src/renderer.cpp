@@ -10,6 +10,8 @@ Renderer::Renderer() {
 
     updateWireframe();
     enableFeature(GL_DEPTH_TEST);
+    
+    initializeShaders();
 }
 
 Renderer::~Renderer() {
@@ -69,11 +71,11 @@ void Renderer::updateCamera(Keyboard keyboard, Mouse *mouse, float delta_time,
 
 void Renderer::update(Scene *CurrentScene, Settings *settings, Keyboard keyboard, 
     Mouse *mouse, float delta_time, float time) {
-
     glm::vec3 res = glm::vec3(settings->resolution.x, settings->resolution.y, 0);
-    CurrentScene->SceneShader->setFloat("global.iTime", time);
-    CurrentScene->SceneShader->setVec3("iResolution", res);
-   
+    // TODO need to set it in the correct place
+    //shaders.at(0)->setFloat("global.iTime", time);
+    //shaders.at(0)->setVec3("iResolution", res);
+
     updateCamera(keyboard, mouse, delta_time, time);
 
     CurrentScene->update(settings, TheCamera);
@@ -117,13 +119,72 @@ void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
                     number = std::to_string(heightNr++);
                 }
 
-                CurrentScene->SceneShader->setInt(("material." + name + number).c_str(), i);
+                model->attached_shader->setInt(("material." + name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
             }
-            //model->onUpdate(CurrentScene->SceneShader, TheCamera);
-            model->setUniforms(CurrentScene->SceneShader);
-            render(CurrentScene->SceneShader, model->meshes[j].VAO, 
-                model->meshes[j].indices.size());
+            model->setUniforms(model->attached_shader);
+            render(model->attached_shader, model->meshes[j].VAO, model->meshes[j].indices.size());
         }
     }
 }
+
+void Renderer::reloadShaders(Scene *CurrentScene) {
+    std::string existing_shader_id;
+    std::string v_shader;
+    std::string f_shader;
+    //std::string g_shader;
+
+    for (int i = 0; i < shaders.size(); i++) {
+        existing_shader_id = shaders[i]->readable_id;
+        v_shader = shaders[i]->vertex_shader_path;
+        f_shader = shaders[i]->fragment_shader_path;
+        //g_shader = shaders[i]->geometry_shader_path;
+
+        shaders.erase(shaders.begin() + i);
+    
+        Shader *shader = new Shader(existing_shader_id.c_str(), v_shader.c_str(), 
+            f_shader.c_str(), nullptr);
+        shaders.push_back(shader);
+    }
+
+    CurrentScene->attachShader();
+}
+
+void Renderer::reloadShader(std::string shader_id, Scene *CurrentScene) {
+    std::string existing_shader_id;
+    std::string v_shader;
+    std::string f_shader;
+    //std::string g_shader;
+
+    for (int i = 0; i < shaders.size(); i++) {
+        if (shaders[i]->readable_id == shader_id) {
+            existing_shader_id = shaders[i]->readable_id;
+            v_shader = shaders[i]->vertex_shader_path;
+            f_shader = shaders[i]->fragment_shader_path;
+            //g_shader = shaders[i]->geometry_shader_path;
+
+            shaders.erase(shaders.begin() + i);
+            break;
+        }
+    }
+
+    Shader *shader = new Shader(existing_shader_id.c_str(), v_shader.c_str(), 
+        f_shader.c_str(), nullptr);
+    shaders.push_back(shader);
+    CurrentScene->attachShader();
+}
+
+void Renderer::initializeShaders() {
+    std::filesystem::path current_path = std::filesystem::current_path();
+    
+    shaders_directory_path = current_path.parent_path().string();
+    shaders_directory_path += "/src/shaders/scene_rendering/";
+
+    std::string v_shader = shaders_directory_path + "shader.vs";
+    std::string f_shader = shaders_directory_path + "shader.fs";
+
+    Shader *shader = new Shader("Basic Shader", v_shader.c_str(), f_shader.c_str(), nullptr);
+    shaders.push_back(shader);
+
+}
+

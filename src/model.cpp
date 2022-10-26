@@ -39,7 +39,7 @@ Model::~Model() {
     delete basic_light;
 }
 
-void Model::onUpdate(Settings *settings, Shader *shader, Camera *TheCamera) {
+void Model::onUpdate(Settings *settings, Camera *TheCamera) {
     transformations_matrices->projection = glm::perspective(TheCamera->Zoom, 
         (float)settings->resolution.x/(float)settings->resolution.y, 
         settings->near, settings->far);
@@ -59,7 +59,7 @@ void Model::onUpdate(Settings *settings, Shader *shader, Camera *TheCamera) {
     transformations_matrices->model = glm::rotate(transformations_matrices->model, 
         model_transformations->rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
-    setUniforms(shader);
+    //setUniforms(shader);
 }
 
 void Model::debug() {

@@ -1,17 +1,7 @@
 #include "../include/scene.h"
 
 Scene::Scene() {
-    std::cout << "Rendering Scene..." << std::endl;
 
-    std::filesystem::path current_path = std::filesystem::current_path();
-    
-    shader_path = current_path.parent_path().string();
-    shader_path += "/src/shaders/scene_rendering/";
-
-    std::string v_shader = shader_path + "shader.vs";
-    std::string f_shader = shader_path + "shader.fs";
-
-    SceneShader = new Shader("Basic Shader", v_shader.c_str(), f_shader.c_str(), nullptr);
 }
 
 std::string Scene::processPathInput(const char *input) {
@@ -31,24 +21,16 @@ std::string Scene::processPathInput(const char *input) {
     return s;
 }
 
-void Scene::update(Settings *settings, Camera *TheCamera) {
+void Scene::attachShader() {
     for (int i = 0; i < models.size(); i++) {
-        models[i]->onUpdate(settings, SceneShader, TheCamera); 
+        models[i]->attached_shader = p_shaders->at(0);
     }
 }
 
-void Scene::reloadShaders() {
-    std::cout << "Updating shaders" << std::endl;
-
-    std::string shader_id = SceneShader->readable_id;
-    std::string v_shader = SceneShader->vertex_shader_path;
-    std::string f_shader = SceneShader->fragment_shader_path;
-    //std::string g_shader = SceneShader->geometry_shader_path;
-    
-    delete SceneShader;
-
-    SceneShader = new Shader(shader_id.c_str(), v_shader.c_str(), f_shader.c_str(), 
-        nullptr);
+void Scene::update(Settings *settings, Camera *TheCamera) {
+    for (int i = 0; i < models.size(); i++) {
+        models[i]->onUpdate(settings, TheCamera); 
+    }
 }
 
 void Scene::addModel(const char *raw_model_path, std::string model_id,
@@ -56,24 +38,26 @@ void Scene::addModel(const char *raw_model_path, std::string model_id,
     std::string new_path = processPathInput(raw_model_path);
     const char *model_path = new_path.c_str();
     Model *new_model = new Model(model_path, model_id, flip_texture);
+    new_model->attached_shader = p_shaders->at(0);
     models.push_back(new_model);
 }
 
 void Scene::addCustomModel() {
     Model *new_model = new Model();
     new_model->model_id = "Cube";
+    new_model->attached_shader = p_shaders->at(0);
     models.push_back(new_model);
 }
 
 void Scene::resetSceneModels() {
     models.clear();
-    shaders.clear();
 }
 
 void Scene::deleteModel(std::string id) {
     for (int i = 0; i < models.size(); i++) {
         if (models[i]->model_id == id) {
             models.erase(models.begin() + i);
+            break;
         }
     }
 }

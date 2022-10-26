@@ -21,17 +21,15 @@ class Scene {
         Scene();
         ~Scene();
         void update(Settings *settings, Camera *TheCamera);
-        void reloadShaders();
         static void resetSceneModels();
         static void addModel(const char *raw_model_path, std::string model_id, 
             bool flip_texture);
         void addCustomModel();
         static void deleteModel(std::string id);
         inline static std::vector<Model*> models;
-        inline static std::vector<Shader*> shaders;
+        inline static std::vector<Shader*> *p_shaders;
 
-        Shader *SceneShader;
-        std::string shader_path;
+        void attachShader();
     private:
         static std::string processPathInput(const char *input);
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <filesystem>
 #include <vector>
 
 #include "../include/shader.h"
@@ -30,13 +31,17 @@ class Renderer {
         void update(Scene *CurrentScene, Settings *settings, Keyboard keyboard, 
             Mouse *mouse, float delta_time, float time);
         void prepare(Scene *CurrentScene, Camera *TheCamera);
+        void reloadShaders(Scene *CurrentScene);
+        void reloadShader(std::string shader_id, Scene *CurrentScene);
+
+        std::vector<Shader*> shaders;
         Camera *TheCamera;
 
         bool wireframe;
         bool depth_test;
+        std::string shaders_directory_path;
     private:
         Scene *TheScene;
-        unsigned int VAO;
-        unsigned int VBO;
-        unsigned int EBO;
+
+        void initializeShaders();
 };

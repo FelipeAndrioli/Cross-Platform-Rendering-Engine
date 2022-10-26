@@ -79,10 +79,6 @@ void UI::onUpdate() {
         p_scene->resetSceneModels();
     } 
 
-    if (ImGui::Button("Reload Shaders")) {
-        p_scene->reloadShaders();
-    }
-
     if (ImGui::TreeNode("Renderer")) {
         if (ImGui::Checkbox("Wireframe", &p_renderer->wireframe)) {
             p_renderer->updateWireframe();
@@ -95,6 +91,24 @@ void UI::onUpdate() {
                 p_renderer->disableFeature(GL_DEPTH_TEST);
             }
         }
+
+        // each shader
+        if (ImGui::TreeNode("Shaders")) {
+            if (ImGui::Button("Reload All Shaders")) {
+                p_renderer->reloadShaders(p_scene);
+            }
+
+            for (int i = 0; i < p_renderer->shaders.size(); i++) {
+                Shader *current_shader = p_renderer->shaders.at(i);
+                if (ImGui::TreeNode(current_shader->readable_id.c_str())) {
+                    if (ImGui::Button("Reload Shader")) {
+                        p_renderer->reloadShader(current_shader->readable_id, p_scene);
+                    }
+                    ImGui::TreePop();
+                }
+            }
+            ImGui::TreePop();
+        }
         ImGui::TreePop();
     }
 
@@ -104,9 +118,14 @@ void UI::onUpdate() {
         
         ImGui::Begin(current_model->model_id.c_str());
 
+        /* DEBUG PURPOSES
         if (ImGui::Button("Debug")) {
             current_model->debug();
         }
+        */
+
+        std::string info_shader = "Attached shader: " + current_model->attached_shader->readable_id;
+        ImGui::TextUnformatted(info_shader.c_str());
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;
