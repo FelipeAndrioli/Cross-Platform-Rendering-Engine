@@ -11,7 +11,7 @@ Scene::Scene() {
     std::string v_shader = shader_path + "shader.vs";
     std::string f_shader = shader_path + "shader.fs";
 
-    SceneShader = new Shader(v_shader.c_str(), f_shader.c_str(), nullptr);
+    SceneShader = new Shader("Basic Shader", v_shader.c_str(), f_shader.c_str(), nullptr);
 }
 
 std::string Scene::processPathInput(const char *input) {
@@ -40,12 +40,15 @@ void Scene::update(Settings *settings, Camera *TheCamera) {
 void Scene::reloadShaders() {
     std::cout << "Updating shaders" << std::endl;
 
-    delete SceneShader;
+    std::string shader_id = SceneShader->readable_id;
+    std::string v_shader = SceneShader->vertex_shader_path;
+    std::string f_shader = SceneShader->fragment_shader_path;
+    //std::string g_shader = SceneShader->geometry_shader_path;
     
-    std::string v_shader = shader_path + "shader.vs";
-    std::string f_shader = shader_path + "shader.fs";
+    delete SceneShader;
 
-    SceneShader = new Shader(v_shader.c_str(), f_shader.c_str(), nullptr);
+    SceneShader = new Shader(shader_id.c_str(), v_shader.c_str(), f_shader.c_str(), 
+        nullptr);
 }
 
 void Scene::addModel(const char *raw_model_path, std::string model_id,

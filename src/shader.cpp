@@ -6,8 +6,8 @@ Shader::Shader() {
 
 }
 
-Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath, 
-    const char* geometryShaderPath = nullptr) {
+Shader::Shader(const char* shader_readable_id, const char* vertexShaderPath, 
+    const char* fragmentShaderPath, const char* geometryShaderPath = nullptr) {
     std::string vertexShaderCode;
     std::string fragmentShaderCode;
     std::string geometryShaderCode;
@@ -83,6 +83,10 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath,
     glDeleteShader(VertexShader);
     glDeleteShader(FragmentShader);
 
+    readable_id = shader_readable_id;
+    vertex_shader_path = vertexShaderPath;
+    fragment_shader_path = fragmentShaderPath;
+    //geometry_shader_path = geometryShaderPath;
 };
 
 void Shader::checkCompileErrors(unsigned int ID, std::string type) {

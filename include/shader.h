@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 #include <string>
 #include <sstream>
@@ -23,8 +24,13 @@
  class Shader {
     public:
         Shader();
-        Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShaderPath);
+        Shader(const char* shader_readable_id, const char* vertexShaderPath, 
+            const char* fragmentShaderPath, const char* geometryShaderPath);
         unsigned int ID;
+        std::string readable_id;
+        std::string vertex_shader_path;
+        std::string fragment_shader_path;
+        std::string geometry_shader_path;
         void use();
         void end();
         void setBool(const std::string &name, bool value) const;
