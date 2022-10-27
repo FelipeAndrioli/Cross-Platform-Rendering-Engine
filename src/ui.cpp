@@ -127,6 +127,15 @@ void UI::onUpdate() {
         std::string info_shader = "Attached shader: " + current_model->attached_shader->readable_id;
         ImGui::TextUnformatted(info_shader.c_str());
 
+        ImGui::ListBoxHeader("Available Shaders", ImVec2(120, 50));
+        for (Shader *shader : p_renderer->shaders) {
+            std::string& item_name = shader->readable_id;
+            if (ImGui::Selectable(shader->readable_id.c_str(), shader->ui_selected)) {
+                p_scene->attachShader(shader->readable_id, current_model->model_id);
+            }
+        }
+        ImGui::ListBoxFooter();
+
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;
             std::string t_label_y = "Translation y " + current_model->model_id;

@@ -87,6 +87,8 @@ Shader::Shader(const char* shader_readable_id, const char* vertexShaderPath,
     vertex_shader_path = vertexShaderPath;
     fragment_shader_path = fragmentShaderPath;
     //geometry_shader_path = geometryShaderPath;
+
+    ui_selected = false;
 };
 
 void Shader::checkCompileErrors(unsigned int ID, std::string type) {

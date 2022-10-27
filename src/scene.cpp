@@ -14,10 +14,8 @@ std::string Scene::processPathInput(const char *input) {
         if (s[i] == '\\') { 
             s[i] = '/';
         }
-        
         i++;
     }
-    
     return s;
 }
 
@@ -25,6 +23,35 @@ void Scene::attachShader() {
     for (int i = 0; i < models.size(); i++) {
         models[i]->attached_shader = p_shaders->at(0);
     }
+}
+
+void Scene::attachShader(std::string shader_id, std::string model_id) {
+    Model *model = nullptr;
+    Shader *shader = nullptr;
+
+    for (int i = 0; i < models.size(); i++) {
+        if (models[i]->model_id == model_id) {
+            model = models[i]; 
+            break;
+        }
+    }
+
+    if (model == nullptr)
+        return;
+
+    for (int i = 0; i < p_shaders->size(); i++) {
+        if (p_shaders->at(i)->readable_id == shader_id) {
+            shader = p_shaders->at(i);
+            break;
+        }
+    }
+
+    if (shader == nullptr)
+        return;
+
+    model->attached_shader = shader;
+    std::cout << "Shader -> " << shader->readable_id << " attached to the model -> " 
+        << model->model_id << " successfully" << std::endl;
 }
 
 void Scene::update(Settings *settings, Camera *TheCamera) {

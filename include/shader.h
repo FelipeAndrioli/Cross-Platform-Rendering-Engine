@@ -31,6 +31,9 @@
         std::string vertex_shader_path;
         std::string fragment_shader_path;
         std::string geometry_shader_path;
+
+        bool ui_selected;
+
         void use();
         void end();
         void setBool(const std::string &name, bool value) const;

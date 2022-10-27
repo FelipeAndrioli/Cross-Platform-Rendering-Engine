@@ -30,6 +30,7 @@ class Scene {
         inline static std::vector<Shader*> *p_shaders;
 
         void attachShader();
+        void attachShader(std::string shader_id, std::string model_id);
     private:
         static std::string processPathInput(const char *input);
 };
