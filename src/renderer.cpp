@@ -4,6 +4,11 @@ Renderer::Renderer() {
 
     std::cout << "Initializing Renderer" << std::endl;
     TheCamera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+    clear_color = new Color();
+    clear_color->r = 0.5f; 
+    clear_color->g = 0.5f; 
+    clear_color->b = 0.5f; 
+    clear_color->a = 1.0f; 
 
     wireframe = false;
     depth_test = true;
@@ -16,6 +21,7 @@ Renderer::Renderer() {
 
 Renderer::~Renderer() {
     std::cout << "Destroying Renderer..." << std::endl;
+    delete TheCamera;
 }
 
 void Renderer::enableFeature(GLenum feature) {
@@ -76,6 +82,8 @@ void Renderer::update(Scene *CurrentScene, Settings *settings, Keyboard keyboard
     //shaders.at(0)->setFloat("global.iTime", time);
     //shaders.at(0)->setVec3("iResolution", res);
 
+    glClearColor(clear_color->r, clear_color->g, clear_color->b, 
+        clear_color->a);
     updateCamera(keyboard, mouse, delta_time, time);
 
     CurrentScene->update(settings, TheCamera);

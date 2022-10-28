@@ -43,43 +43,49 @@ void UI::onUpdate() {
     handler = std::to_string(*p_ms) + " ms";
     ImGui::TextUnformatted(handler.c_str());
 
-    if (ImGui::Button("Debug")) {
-        std::cout << "Objects amount -> " << p_scene->models.size() << std::endl;
+    if (ImGui::TreeNode("Scene")) {
+        if (ImGui::Button("Debug")) {
+            std::cout << "Objects amount -> " << p_scene->models.size() << std::endl;
+        }
+
+        static char t_model_path[128] = "";
+        static char t_model_id[128] = "";
+
+        ImGui::InputText("Model id", t_model_id, IM_ARRAYSIZE(t_model_id));
+        ImGui::InputText("Model path", t_model_path, IM_ARRAYSIZE(t_model_path));
+        ImGui::Checkbox("STBI Flip Vertically", &flip_texture);
+       
+        if (ImGui::Button("Add model")) {
+            /* TODO
+             *
+             * - Add validation when pressed with empty values
+             *
+             * */
+            std::cout << "Loading model..." << std::endl;
+            const char *model_path = t_model_path;
+            const char *model_id = t_model_id;
+            p_scene->addModel(model_path, model_id, flip_texture);
+        }
+        
+        if (ImGui::Button("Add custom model")) {
+            std::cout << "Loading custom model..." << std::endl;
+            p_scene->addCustomModel();
+        }
+
+        if (ImGui::Button("Reset Scene Models")) {
+            p_scene->resetSceneModels();
+        } 
+
+        ImGui::TreePop();
     }
 
-    ImGui::SliderFloat("Clear Color R", &p_window->clear_color_r, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color G", &p_window->clear_color_g, 0.0f, 1.0f);
-    ImGui::SliderFloat("Clear Color B", &p_window->clear_color_b, 0.0f, 1.0f);
-
-    static char t_model_path[128] = "";
-    static char t_model_id[128] = "";
-
-    ImGui::InputText("Model id", t_model_id, IM_ARRAYSIZE(t_model_id));
-    ImGui::InputText("Model path", t_model_path, IM_ARRAYSIZE(t_model_path));
-    ImGui::Checkbox("STBI Flip Vertically", &flip_texture);
-   
-    if (ImGui::Button("Add model")) {
-        /* TODO
-         *
-         * - Add validation when pressed with empty values
-         *
-         * */
-        std::cout << "Loading model..." << std::endl;
-        const char *model_path = t_model_path;
-        const char *model_id = t_model_id;
-        p_scene->addModel(model_path, model_id, flip_texture);
-    }
-    
-    if (ImGui::Button("Add custom model")) {
-        std::cout << "Loading custom model..." << std::endl;
-        p_scene->addCustomModel();
-    }
-
-    if (ImGui::Button("Reset Scene Models")) {
-        p_scene->resetSceneModels();
-    } 
 
     if (ImGui::TreeNode("Renderer")) {
+        ImGui::SliderFloat("Clear Color R", &p_renderer->clear_color->r, 0.0f, 1.0f);
+        ImGui::SliderFloat("Clear Color G", &p_renderer->clear_color->g, 0.0f, 1.0f);
+        ImGui::SliderFloat("Clear Color B", &p_renderer->clear_color->b, 0.0f, 1.0f);
+        ImGui::SliderFloat("Clear Color A", &p_renderer->clear_color->a, 0.0f, 1.0f);
+
         if (ImGui::Checkbox("Wireframe", &p_renderer->wireframe)) {
             p_renderer->updateWireframe();
         }

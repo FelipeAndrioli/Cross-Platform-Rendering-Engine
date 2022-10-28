@@ -12,6 +12,7 @@
 #include "../src/util/camera_movement.h"
 #include "../src/util/keyboard.h"
 #include "../src/util/mouse.h"
+#include "../src/util/color.h"
 
 #include "../libs/glad/build/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
@@ -36,6 +37,7 @@ class Renderer {
 
         std::vector<Shader*> shaders;
         Camera *TheCamera;
+        Color *clear_color;
 
         bool wireframe;
         bool depth_test;

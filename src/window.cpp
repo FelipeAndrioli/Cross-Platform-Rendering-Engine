@@ -136,7 +136,7 @@ void Window::main_loop() {
     while(!glfwWindowShouldClose(m_window)) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(clear_color_r, clear_color_g, clear_color_b, 1.0f);
+        //glClearColor(clear_color_r, clear_color_g, clear_color_b, 1.0f);
         
         m_update();
 
