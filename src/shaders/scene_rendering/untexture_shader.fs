@@ -9,7 +9,7 @@ struct Light {
 struct Material {
     float shininess;
     vec3 color;
-}
+};
 
 uniform Material material;
 uniform Light light;
