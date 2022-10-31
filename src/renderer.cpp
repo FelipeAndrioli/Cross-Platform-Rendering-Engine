@@ -191,8 +191,13 @@ void Renderer::initializeShaders() {
     std::string v_shader = shaders_directory_path + "shader.vs";
     std::string f_shader = shaders_directory_path + "shader.fs";
 
-    Shader *shader = new Shader("Basic Shader", v_shader.c_str(), f_shader.c_str(), nullptr);
-    shaders.push_back(shader);
+    Shader *basic_shader = new Shader("Basic Shader", v_shader.c_str(), f_shader.c_str(), nullptr);
+    shaders.push_back(basic_shader);
 
+    f_shader = shaders_directory_path + "untexture_shader.fs";
+
+    Shader *untextured_shader = new Shader("Untextured Shader", v_shader.c_str(),
+        f_shader.c_str(), nullptr);
+    shaders.push_back(untextured_shader);
 }
 
