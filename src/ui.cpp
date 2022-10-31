@@ -142,6 +142,8 @@ void UI::onUpdate() {
         }
         ImGui::ListBoxFooter();
 
+        ImGui::Checkbox("Untextured model", &current_model->textured);
+
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;
             std::string t_label_y = "Translation y " + current_model->model_id;
@@ -175,6 +177,13 @@ void UI::onUpdate() {
             ImGui::SliderFloat("Ambient", &current_model->basic_light->ambient, 0.0f, 1.0f);
             ImGui::SliderFloat("Diffuse", &current_model->basic_light->diffuse, 0.0f, 1.0f);
             ImGui::SliderFloat("Specular", &current_model->basic_light->specular, 0.0f, 1.0f);
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Coloring")) { 
+            ImGui::SliderFloat("R", &current_model->color->r, 0.0f, 1.0f);
+            ImGui::SliderFloat("G", &current_model->color->g, 0.0f, 1.0f);
+            ImGui::SliderFloat("B", &current_model->color->b, 0.0f, 1.0f);
             ImGui::TreePop();
         }
 

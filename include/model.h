@@ -16,6 +16,7 @@
 #include "../src/util/transformations.h"
 #include "../src/util/lighting.h"
 #include "../src/util/settings.h"
+#include "../src/util/color.h"
 
 #include "camera.h"
 #include "mesh.h"
@@ -37,16 +38,18 @@ class Model {
        
         bool gamma_correction;
         bool stbi_flip_vertically; 
+        bool textured;
 
         float scale_handler;
         
         void onUpdate(Settings *settings, Camera *TheCamera);
-        void setUniforms(Shader *shader);
+        void setUniforms();
 
         Transformations *model_transformations;
         TransformationsMatrices *transformations_matrices;
         BasicLight *basic_light;
         Shader *attached_shader;
+        Color *color;
         
         void generateCubeVertices();
         void debug();

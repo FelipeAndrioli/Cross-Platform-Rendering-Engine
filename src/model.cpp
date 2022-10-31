@@ -10,6 +10,7 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
 
     stbi_flip_vertically = flip_texture;
     model_id = id;
+    textured = true;
     loadModel(path);
     onCreate();
 }
@@ -30,6 +31,12 @@ void Model::onCreate() {
     transformations_matrices->projection = glm::mat4(1.0f);
     transformations_matrices->view = glm::mat4(1.0f);
     transformations_matrices->model = glm::mat4(1.0f);
+
+    color = new Color();
+    color->r = 0.7f;
+    color->g = 0.7f;
+    color->b = 0.7f;
+    color->a = 0.7f;
 }
 
 Model::~Model() {
@@ -88,15 +95,20 @@ void Model::debug() {
     }
 }
 
-void Model::setUniforms(Shader *shader) {
-    shader->use();
-    shader->setMat4("projection", transformations_matrices->projection);
-    shader->setMat4("view", transformations_matrices->view);
-    shader->setMat4("model", transformations_matrices->model);
+void Model::setUniforms() {
+    attached_shader->use();
+    attached_shader->setMat4("projection", transformations_matrices->projection);
+    attached_shader->setMat4("view", transformations_matrices->view);
+    attached_shader->setMat4("model", transformations_matrices->model);
 
-    shader->setFloat("light.ambient", basic_light->ambient);
-    shader->setFloat("light.diffuse", basic_light->diffuse);
-    shader->setFloat("light.specular", basic_light->specular);
+    attached_shader->setFloat("light.ambient", basic_light->ambient);
+    attached_shader->setFloat("light.diffuse", basic_light->diffuse);
+    attached_shader->setFloat("light.specular", basic_light->specular);
+
+    if (!textured) {
+        attached_shader->setVec3("material.color", glm::vec3(color->r, color->g,
+            color->b));
+    }
 }
 
 void Model::generateCubeVertices() {

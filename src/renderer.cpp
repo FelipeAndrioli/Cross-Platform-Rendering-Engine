@@ -111,26 +111,28 @@ void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
             unsigned int normalNr = 1;
             unsigned int heightNr = 1;
 
-            for (unsigned int k = 0; k < model->meshes[j].textures.size(); k++) {
-                glActiveTexture(GL_TEXTURE0 + k);
+            if (model->textured) {
+                for (unsigned int k = 0; k < model->meshes[j].textures.size(); k++) {
+                    glActiveTexture(GL_TEXTURE0 + k);
 
-                std::string number;
-                std::string name = model->meshes[j].textures[k].type;
+                    std::string number;
+                    std::string name = model->meshes[j].textures[k].type;
 
-                if (name == "texture_diffuse") {
-                    number = std::to_string(diffuseNr++);
-                } else if (name == "texture_specular") {
-                    number = std::to_string(specularNr++);
-                } else if (name == "texture_normal") {
-                    number = std::to_string(normalNr++);
-                } else if (name == "texture_height") {
-                    number = std::to_string(heightNr++);
+                    if (name == "texture_diffuse") {
+                        number = std::to_string(diffuseNr++);
+                    } else if (name == "texture_specular") {
+                        number = std::to_string(specularNr++);
+                    } else if (name == "texture_normal") {
+                        number = std::to_string(normalNr++);
+                    } else if (name == "texture_height") {
+                        number = std::to_string(heightNr++);
+                    }
+
+                    model->attached_shader->setInt(("material." + name + number).c_str(), i);
+                    glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
                 }
-
-                model->attached_shader->setInt(("material." + name + number).c_str(), i);
-                glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
             }
-            model->setUniforms(model->attached_shader);
+            model->setUniforms();
             render(model->attached_shader, model->meshes[j].VAO, model->meshes[j].indices.size());
         }
     }
