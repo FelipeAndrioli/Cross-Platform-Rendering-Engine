@@ -24,6 +24,6 @@ out vec4 FragColor;
 
 void main() {
     vec3 ambient = light.ambient * vec3(texture(material.diffuse_texture, TexCoord));
-   
+  
     FragColor = vec4(ambient, 1.0);    
 } 

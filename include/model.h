@@ -38,7 +38,6 @@ class Model {
        
         bool gamma_correction;
         bool stbi_flip_vertically; 
-        bool textured;
 
         float scale_handler;
         

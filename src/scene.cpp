@@ -54,6 +54,10 @@ void Scene::attachShader(std::string shader_id, std::string model_id) {
         << model->model_id << " successfully" << std::endl;
 }
 
+void Scene::setTextured(std::string model_id) {
+    
+}
+
 void Scene::update(Settings *settings, Camera *TheCamera) {
     for (int i = 0; i < models.size(); i++) {
         models[i]->onUpdate(settings, TheCamera); 

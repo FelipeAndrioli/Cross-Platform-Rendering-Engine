@@ -10,7 +10,6 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
 
     stbi_flip_vertically = flip_texture;
     model_id = id;
-    textured = true;
     loadModel(path);
     onCreate();
 }
@@ -105,10 +104,7 @@ void Model::setUniforms() {
     attached_shader->setFloat("light.diffuse", basic_light->diffuse);
     attached_shader->setFloat("light.specular", basic_light->specular);
 
-    if (!textured) {
-        attached_shader->setVec3("material.color", glm::vec3(color->r, color->g,
-            color->b));
-    }
+    attached_shader->setVec3("material.color", glm::vec3(color->r, color->g, color->b));
 }
 
 void Model::generateCubeVertices() {

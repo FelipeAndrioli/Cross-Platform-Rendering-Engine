@@ -79,7 +79,6 @@ void UI::onUpdate() {
         ImGui::TreePop();
     }
 
-
     if (ImGui::TreeNode("Renderer")) {
         ImGui::SliderFloat("Clear Color R", &p_renderer->clear_color->r, 0.0f, 1.0f);
         ImGui::SliderFloat("Clear Color G", &p_renderer->clear_color->g, 0.0f, 1.0f);
@@ -130,7 +129,8 @@ void UI::onUpdate() {
         }
         */
 
-        std::string info_shader = "Attached shader: " + current_model->attached_shader->readable_id;
+        std::string info_shader = "Attached shader: " + current_model->
+            attached_shader->readable_id;
         ImGui::TextUnformatted(info_shader.c_str());
 
         ImGui::ListBoxHeader("Available Shaders", ImVec2(120, 50));
@@ -141,8 +141,6 @@ void UI::onUpdate() {
             }
         }
         ImGui::ListBoxFooter();
-
-        ImGui::Checkbox("Untextured model", &current_model->textured);
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;

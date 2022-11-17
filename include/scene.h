@@ -31,6 +31,7 @@ class Scene {
 
         void attachShader();
         void attachShader(std::string shader_id, std::string model_id);
+        void setTextured(std::string model_id);
     private:
         static std::string processPathInput(const char *input);
 };
