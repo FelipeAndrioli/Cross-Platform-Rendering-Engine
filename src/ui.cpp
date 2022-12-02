@@ -123,24 +123,23 @@ void UI::onUpdate() {
         
         ImGui::Begin(current_model->model_id.c_str());
 
-        /* DEBUG PURPOSES
-        if (ImGui::Button("Debug")) {
-            current_model->debug();
-        }
-        */
-
         std::string info_shader = "Attached shader: " + current_model->
             attached_shader->readable_id;
         ImGui::TextUnformatted(info_shader.c_str());
 
-        ImGui::ListBoxHeader("Available Shaders", ImVec2(120, 50));
-        for (Shader *shader : p_renderer->shaders) {
-            std::string& item_name = shader->readable_id;
-            if (ImGui::Selectable(shader->readable_id.c_str(), shader->ui_selected)) {
-                p_scene->attachShader(shader->readable_id, current_model->model_id);
+        //ImGui::ListBoxHeader("Available Shaders", ImVec2(120, 50));
+        if(ImGui::BeginListBox("Available shaders", ImVec2(120, 50))) {
+            for (Shader *shader : p_renderer->shaders) {
+                std::string& item_name = shader->readable_id;
+                if (ImGui::Selectable(shader->readable_id.c_str(), shader->ui_selected)) {
+                    p_scene->attachShader(shader->readable_id, current_model->model_id);
+                }
             }
+
+            ImGui::EndListBox();
         }
-        ImGui::ListBoxFooter();
+        
+        //ImGui::ListBoxFooter();
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;
@@ -191,7 +190,7 @@ void UI::onUpdate() {
         ImGui::End();
     }
     // each model end
-    
+
     ImGui::End();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
