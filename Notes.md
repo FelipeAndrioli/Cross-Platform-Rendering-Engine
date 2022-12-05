@@ -1,31 +1,22 @@
 # Notes about the project
 
-## Release goals
+## Next Updates 
 
-- Rendering Engine
-    - Swap between rendering modes
-    - UI to modify the scene
-    - UI to modify the configs 
+### Ongoing
+- Light Sources 
+- Textured/Untextured objects
 
-    - Pixel Rendering similar to ShaderToy
-        - [] Pixel Rendering 
-        - Fast Reload (Optional)
-        - Backup Shader (Optional)
-    - Physically Based Rendering
-        - [DONE] 3D Model Loading (ASSIMP for now)
-        - Light
-        - [DONE] Camera
+### Planning
+- Custom objects
+    - Dynamic vertex generation
+    - Cube, Sphere, Plane, etc.
+- Mouse to control model transformations 
+- Mouse to access model informations
+    - Open UI when clicked
+    - Arrows to control model transformations (Maybe, need to evaluate better)
 
-## Known Issues/TODOs
-
-[] - Fix Pixel Rendering
-[] - Time (FPS, FPM, Delta time)
-[] - Refactoring
-
-## Notes
-
-I've screw big on pixel rendering, adding load, update, and draw functions 
-for Physically based rendering I've completely forgot to consider the 
-alternative rendering (for example the update function must be different), now 
-I need to go back fixing it until make it work.
-
+### Future
+- Vulkan Support
+- DirectX Support
+- Create own math lib
+- Create own model loading lib
