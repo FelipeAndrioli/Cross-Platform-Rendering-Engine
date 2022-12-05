@@ -1,5 +1,7 @@
 # Notes about the project
 
+Note: Order doesn't matter
+
 ## Next Updates 
 
 ### Ongoing
@@ -10,12 +12,13 @@
 - Custom objects
     - Dynamic vertex generation
     - Cube, Sphere, Plane, etc.
-- Mouse to control model transformations 
 - Mouse to access model informations
-    - Open UI when clicked
+    - Open specific model UI when clicked
+    - Control camera when mouse clicked (sketchfab as reference)
     - Arrows to control model transformations (Maybe, need to evaluate better)
 
 ### Future
+- Movement
 - Vulkan Support
 - DirectX Support
 - Create own math lib
