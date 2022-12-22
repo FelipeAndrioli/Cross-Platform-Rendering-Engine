@@ -10,6 +10,7 @@ Model::Model(const char *path, std::string id,bool flip_texture) {
 
     stbi_flip_vertically = flip_texture;
     model_id = id;
+    is_lightsource = false;
     loadModel(path);
     onCreate();
 }
@@ -20,6 +21,8 @@ void Model::onCreate() {
     model_transformations->translation = glm::vec3(0.0f, 0.0f, 0.0f);
     model_transformations->scalation = glm::vec3(scale_handler);
     model_transformations->rotation = glm::vec3(0.0f);
+
+    light_source = nullptr;
 
     basic_light = new BasicLight();
     basic_light->ambient = 1.0f;
@@ -65,7 +68,10 @@ void Model::onUpdate(Settings *settings, Camera *TheCamera) {
     transformations_matrices->model = glm::rotate(transformations_matrices->model, 
         model_transformations->rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
-    //setUniforms(shader);
+    if (is_lightsource) {
+        light_source->color = glm::vec3(color->r, color->g, color->b);
+        light_source->position = model_transformations->translation;
+    }
 }
 
 void Model::debug() {
@@ -94,17 +100,39 @@ void Model::debug() {
     }
 }
 
-void Model::setUniforms() {
+void Model::setUniforms(std::vector<LightSource*> light_sources) {
     attached_shader->use();
     attached_shader->setMat4("projection", transformations_matrices->projection);
     attached_shader->setMat4("view", transformations_matrices->view);
     attached_shader->setMat4("model", transformations_matrices->model);
 
-    attached_shader->setFloat("light.ambient", basic_light->ambient);
-    attached_shader->setFloat("light.diffuse", basic_light->diffuse);
-    attached_shader->setFloat("light.specular", basic_light->specular);
+    if (!light_source) {
+        attached_shader->setFloat("light.ambient", basic_light->ambient);
+        attached_shader->setFloat("light.diffuse", basic_light->diffuse);
+        attached_shader->setFloat("light.specular", basic_light->specular);
 
-    attached_shader->setVec3("material.color", glm::vec3(color->r, color->g, color->b));
+        attached_shader->setVec3("material.color", glm::vec3(color->r, color->g, color->b));
+
+        for (int i = 0; i < light_sources.size(); i++) {
+            //attached_shader->setVec3("lightSources[" + std::to_string(i) + "].position", light_sources.at(i)->position);
+            //attached_shader->setVec3("lightSources[" + std::to_string(i) + "].color", light_sources.at(i)->color);
+        
+            attached_shader->setVec3("light.position", light_sources.at(0)->position);
+            attached_shader->setVec3("light.color", light_sources.at(0)->color);
+        }
+    } else {
+        attached_shader->setVec3("light_color", light_source->color);
+    }
+}
+
+void Model::turnIntoLightsource(std::string id) {
+    light_source = new LightSource();
+    light_source->id = id;
+    light_source->enable = true;
+    light_source->color = glm::vec3(1.0f, 1.0f, 1.0f);
+    //light_source->position = calculateModelPosition();
+    light_source->position = model_transformations->translation;
+    is_lightsource = true;
 }
 
 void Model::generateCubeVertices() {
@@ -423,3 +451,8 @@ unsigned int Model::TextureFromFile(const char *path, const std::string
 
     return textureID;
 }
+
+glm::vec3 calculateModelPosition() {
+    //TODO finish this function
+    return glm::vec3(1.0f, 1.0f, 1.0f);
+} 

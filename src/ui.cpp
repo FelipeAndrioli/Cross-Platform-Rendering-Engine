@@ -69,7 +69,14 @@ void UI::onUpdate() {
         
         if (ImGui::Button("Add custom model")) {
             std::cout << "Loading custom model..." << std::endl;
-            p_scene->addCustomModel();
+            const char *model_id = t_model_id;
+            p_scene->addCustomModel(model_id);
+        }
+
+        if (ImGui::Button("Add Light Source")) {
+            std::cout << "Adding lightsource to the scene" << std::endl;
+            const char *model_id = t_model_id;
+            p_scene->addLightSource(model_id);
         }
 
         if (ImGui::Button("Reset Scene Models")) {
@@ -184,8 +191,14 @@ void UI::onUpdate() {
             ImGui::TreePop();
         }
 
-        if (ImGui::Button("Delete model")) {
-            p_scene->deleteModel(current_model->model_id);
+        if (!current_model->is_lightsource) {
+            if (ImGui::Button("Delete model")) {
+                p_scene->deleteModel(current_model->model_id);
+            }
+        } else {
+            if (ImGui::Button("Delete Lightsource")) {
+                p_scene->deleteLightsource(current_model->model_id); 
+            }
         }
         ImGui::End();
     }

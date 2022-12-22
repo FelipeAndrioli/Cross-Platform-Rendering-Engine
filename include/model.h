@@ -37,16 +37,19 @@ class Model {
         std::string directory;
        
         bool gamma_correction;
-        bool stbi_flip_vertically; 
+        bool stbi_flip_vertically;
+        bool is_lightsource;
 
         float scale_handler;
         
         void onUpdate(Settings *settings, Camera *TheCamera);
-        void setUniforms();
+        void setUniforms(std::vector<LightSource*> light_sources);
+        void turnIntoLightsource(std::string id);
 
         Transformations *model_transformations;
         TransformationsMatrices *transformations_matrices;
         BasicLight *basic_light;
+        LightSource *light_source;
         Shader *attached_shader;
         Color *color;
         
@@ -62,4 +65,5 @@ class Model {
         unsigned int TextureFromFile(const char *path, const std::string 
                 &directory, bool gamma = false);
         void onCreate();
+        glm::vec3 calculateModelPosition();
 };

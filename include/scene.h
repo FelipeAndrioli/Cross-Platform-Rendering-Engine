@@ -24,14 +24,16 @@ class Scene {
         static void resetSceneModels();
         static void addModel(const char *raw_model_path, std::string model_id, 
             bool flip_texture);
-        void addCustomModel();
+        void addCustomModel(std::string model_id);
+        void addLightSource(std::string light_id);
         static void deleteModel(std::string id);
+        static void deleteLightsource(std::string id);
         inline static std::vector<Model*> models;
+        inline static std::vector<LightSource*> light_sources;
         inline static std::vector<Shader*> *p_shaders;
 
         void attachShader();
         void attachShader(std::string shader_id, std::string model_id);
-        void setTextured(std::string model_id);
     private:
         static std::string processPathInput(const char *input);
 };

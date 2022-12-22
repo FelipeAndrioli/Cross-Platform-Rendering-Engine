@@ -130,7 +130,7 @@ void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
                 model->attached_shader->setInt(("material." + name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
             }
-            model->setUniforms();
+            model->setUniforms(CurrentScene->light_sources);
             render(model->attached_shader, model->meshes[j].VAO, model->meshes[j].indices.size());
         }
     }
@@ -199,5 +199,12 @@ void Renderer::initializeShaders() {
     Shader *untextured_shader = new Shader("Untextured Shader", v_shader.c_str(),
         f_shader.c_str(), nullptr);
     shaders.push_back(untextured_shader);
+
+    v_shader = shaders_directory_path + "ls_shader.vs";
+    f_shader = shaders_directory_path + "ls_shader.fs";
+
+    Shader *light_source_shader = new Shader("Light Source Shader", v_shader.c_str(),
+        f_shader.c_str(), nullptr);
+    shaders.push_back(light_source_shader);
 }
 
