@@ -114,11 +114,8 @@ void Model::setUniforms(std::vector<LightSource*> light_sources) {
         attached_shader->setVec3("material.color", glm::vec3(color->r, color->g, color->b));
 
         for (int i = 0; i < light_sources.size(); i++) {
-            //attached_shader->setVec3("lightSources[" + std::to_string(i) + "].position", light_sources.at(i)->position);
-            //attached_shader->setVec3("lightSources[" + std::to_string(i) + "].color", light_sources.at(i)->color);
-        
-            attached_shader->setVec3("light.position", light_sources.at(0)->position);
-            attached_shader->setVec3("light.color", light_sources.at(0)->color);
+            attached_shader->setVec3("lightSource[" + std::to_string(i) + "].position", light_sources.at(i)->position);
+            attached_shader->setVec3("lightSource[" + std::to_string(i) + "].color", light_sources.at(i)->color);
         }
     } else {
         attached_shader->setVec3("light_color", light_source->color);
@@ -130,7 +127,6 @@ void Model::turnIntoLightsource(std::string id) {
     light_source->id = id;
     light_source->enable = true;
     light_source->color = glm::vec3(1.0f, 1.0f, 1.0f);
-    //light_source->position = calculateModelPosition();
     light_source->position = model_transformations->translation;
     is_lightsource = true;
 }
@@ -146,9 +142,9 @@ void Model::generateCubeVertices() {
      *      - Automate positions -> follow binary permutations seems to work
      *      - Automate normals -> need to understand how these normals are calculated
      *      - Automate indices -> need to understand how to generate automated indices
-     * - The normals might be wrong
-     *
+     * - The normals ARE be wrong
      * */
+
 
     Vertex vertex;
     vertex.Position = glm::vec3(-0.5f, -0.5f, 0.5f);    // 0
