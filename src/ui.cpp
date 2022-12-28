@@ -134,7 +134,6 @@ void UI::onUpdate() {
             attached_shader->readable_id;
         ImGui::TextUnformatted(info_shader.c_str());
 
-        //ImGui::ListBoxHeader("Available Shaders", ImVec2(120, 50));
         if(ImGui::BeginListBox("Available shaders", ImVec2(120, 50))) {
             for (Shader *shader : p_renderer->shaders) {
                 std::string& item_name = shader->readable_id;
@@ -145,8 +144,6 @@ void UI::onUpdate() {
 
             ImGui::EndListBox();
         }
-        
-        //ImGui::ListBoxFooter();
 
         if (ImGui::TreeNode("Transformations")) {
             std::string t_label_x = "Translation x " + current_model->model_id;
@@ -180,7 +177,10 @@ void UI::onUpdate() {
         if (ImGui::TreeNode("Lighting")) {
             ImGui::SliderFloat("Ambient", &current_model->basic_light->ambient, 0.0f, 1.0f);
             ImGui::SliderFloat("Diffuse", &current_model->basic_light->diffuse, 0.0f, 1.0f);
+            //ImGui::SliderFloat("Specular", &current_model->basic_light->specular, 0.0f, 64.0f);
             ImGui::SliderFloat("Specular", &current_model->basic_light->specular, 0.0f, 1.0f);
+            ImGui::SliderFloat("Shininess", &current_model->basic_light->shininess, 0.0f, 256.0f);
+
             ImGui::TreePop();
         }
 

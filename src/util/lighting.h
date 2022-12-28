@@ -8,6 +8,7 @@ typedef struct {
     float ambient;
     float diffuse;
     float specular;
+    float shininess;
 } BasicLight;
 
 typedef struct {

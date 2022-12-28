@@ -100,7 +100,7 @@ void Model::debug() {
     }
 }
 
-void Model::setUniforms(std::vector<LightSource*> light_sources) {
+void Model::setUniforms(std::vector<LightSource*> light_sources, Camera *TheCamera) {
     attached_shader->use();
     attached_shader->setMat4("projection", transformations_matrices->projection);
     attached_shader->setMat4("view", transformations_matrices->view);
@@ -110,8 +110,11 @@ void Model::setUniforms(std::vector<LightSource*> light_sources) {
         attached_shader->setFloat("light.ambient", basic_light->ambient);
         attached_shader->setFloat("light.diffuse", basic_light->diffuse);
         attached_shader->setFloat("light.specular", basic_light->specular);
+        attached_shader->setFloat("light.shininess", basic_light->shininess);
 
         attached_shader->setVec3("material.color", glm::vec3(color->r, color->g, color->b));
+
+        attached_shader->setVec3("viewPos", TheCamera->Position);
 
         for (int i = 0; i < light_sources.size(); i++) {
             attached_shader->setVec3("lightSource[" + std::to_string(i) + "].position", light_sources.at(i)->position);

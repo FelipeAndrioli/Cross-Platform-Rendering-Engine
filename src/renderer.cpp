@@ -130,7 +130,7 @@ void Renderer::prepare(Scene *CurrentScene, Camera *TheCamera) {
                 model->attached_shader->setInt(("material." + name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, model->meshes[j].textures[k].id);
             }
-            model->setUniforms(CurrentScene->light_sources);
+            model->setUniforms(CurrentScene->light_sources, TheCamera);
             render(model->attached_shader, model->meshes[j].VAO, model->meshes[j].indices.size());
         }
     }
@@ -186,7 +186,7 @@ void Renderer::initializeShaders() {
     std::filesystem::path current_path = std::filesystem::current_path();
     
     shaders_directory_path = current_path.parent_path().string();
-    shaders_directory_path += "/src/shaders/scene_rendering/";
+    shaders_directory_path += "/assets/shaders/scene_rendering/";
 
     std::string v_shader = shaders_directory_path + "shader.vs";
     std::string f_shader = shaders_directory_path + "shader.fs";

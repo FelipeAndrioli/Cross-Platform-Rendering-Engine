@@ -43,7 +43,7 @@ class Model {
         float scale_handler;
         
         void onUpdate(Settings *settings, Camera *TheCamera);
-        void setUniforms(std::vector<LightSource*> light_sources);
+        void setUniforms(std::vector<LightSource*> light_sources, Camera *TheCamera);
         void turnIntoLightsource(std::string id);
 
         Transformations *model_transformations;
