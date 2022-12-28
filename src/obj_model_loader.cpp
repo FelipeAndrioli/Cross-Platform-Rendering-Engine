@@ -2,7 +2,9 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <vector>
 
+#include "./math.h"
 /*
 
 OBJ Data Format 
@@ -56,10 +58,6 @@ shadow_obj  -> shadow casting
 trace_obj   -> ray tracing
 ctech   -> curve approximation technique
 stech   -> surface approximation technique
-*/
-
-/*
-   WORK IN PROGRESS
 */
 
 typedef enum {
@@ -145,6 +143,109 @@ void log(const char *message) {
     std::cout << message << std::endl;
 }
 
+void log(unsigned int value) {
+    std::cout << value << std::endl;
+}
+
+void log(math::vec3 v) {
+    std::cout << "x -> " << v.x << " y -> " << v.y << " z -> " << v.z << std::endl; 
+}
+
+void log(math::vec2 v) {
+    std::cout << "x -> " << v.x << " y -> " << v.y << std::endl; 
+}
+
+void log(std::vector<int> vec) {
+    for (int i = 0; i < vec.size(); i++) {
+        std::cout << vec[i] << " ";
+    }
+}
+
+void log(std::vector<math::vec3> &vertices) {
+    for (int i = 0; i < vertices.size(); i++) {
+        log(vertices.at(i));
+    }
+}
+
+void log(std::vector<math::vec2> &vertices) {
+    for (int i = 0; i < vertices.size(); i++) {
+        log(vertices.at(i));
+    }
+}
+
+void log(std::vector<std::vector<int>> faces) {
+    for (int i = 0; i < faces.size(); i++) {
+        for (int j = 0; j < faces[i].size(); j++) {
+            std::cout << faces[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+math::vec2 splitVec2(std::string line) {
+    math::vec2 vec;
+    std::string delimiter = " ";
+    std::string raw = line;
+    std::string token;
+    std::size_t pos = raw.find(delimiter);
+
+    token = raw.substr(0, pos);
+    raw.erase(0, pos + delimiter.length());
+
+    vec.x = std::stof(token);
+    vec.y = std::stof(raw);
+
+    return vec;
+}
+
+math::vec3 splitVec3(std::string line) {
+    math::vec3 vec;
+    std::string delimiter = " ";
+    std::string raw = line;
+    std::string token;
+    std::size_t pos = 0;
+    int count = 0;
+
+    while ((pos = raw.find(delimiter)) != std::string::npos) {
+        token = raw.substr(0, pos);
+        raw.erase(0, pos + delimiter.length());
+
+        if (count == 0)
+            vec.x = std::stof(token);
+        if (count == 1)
+            vec.y = std::stof(token);
+        count++;
+    }
+
+    vec.z = std::stof(raw);
+
+    return vec;
+}
+
+std::vector<int> splitFaces(std::string line) {
+    std::vector<int> vec;
+    std::string space_delimiter = " ";
+    std::string slash_delimiter = "/";
+    std::string raw = line;
+    std::string token;
+    std::string value;
+    std::size_t pos_outer = 0;
+    std::size_t pos_inner = 0;
+
+    while ((pos_outer = raw.find(space_delimiter)) != std::string::npos) {
+        token = raw.substr(0, pos_outer);
+        raw.erase(0, pos_outer + space_delimiter.length());
+
+        while ((pos_inner = token.find(slash_delimiter)) != std::string::npos) {
+            value = token.substr(0, pos_inner);
+            token.erase(0, pos_inner + slash_delimiter.length());
+            vec.push_back(std::stoi(value));
+        }
+    }
+
+    return vec;
+}
+
 void showSummary(std::map<std::string, int> summary) {
     std::map<std::string, int>::iterator it;
 
@@ -155,6 +256,22 @@ void showSummary(std::map<std::string, int> summary) {
     }
 }
 
+void processV(std::vector<math::vec3> &vertices, std::string line) { 
+    vertices.push_back(splitVec3(line.substr(2, line.length())));
+}
+
+void processVt(std::vector<math::vec2> &tex_coords, std::string line) { 
+    tex_coords.push_back(splitVec2(line.substr(3, line.length())));
+}
+
+void processVn(std::vector<math::vec3> &normals, std::string line) { 
+    normals.push_back(splitVec3(line.substr(3, line.length())));
+}
+
+void processF(std::vector<std::vector<int>> faces, std::string line) {
+    faces.push_back(splitFaces(line.substr(2, line.length())));
+}
+
 int main() {
 
     //const char *path = "./Intergalatic_Spaceship/Intergalactic_Spaceship.obj";
@@ -162,8 +279,12 @@ int main() {
     std::ifstream file (path);
     std::string line;
     std::string delimiter = " ";
-
     std::map<std::string, int> summary;
+
+    std::vector<math::vec3> vertices;
+    std::vector<math::vec2> tex_coords;
+    std::vector<math::vec3> normals;
+    std::vector<std::vector<int>> faces;
 
     while (getline(file, line)) {
         std::string identifier = line.substr(0, line.find(delimiter));
@@ -171,12 +292,15 @@ int main() {
         switch (handleInput(identifier)) {
             case obj_identifier::v:
                 summary["v"]++;
+                processV(vertices, line);
                 break;
             case obj_identifier::vt:
                 summary["vt"]++;
+                processVt(tex_coords, line);
                 break;
             case obj_identifier::vn:
                 summary["vn"]++;
+                processVn(normals, line);
                 break;
             case obj_identifier::vp:
                 summary["vp"]++;
@@ -201,6 +325,7 @@ int main() {
                 break;
             case obj_identifier::f:
                 summary["f"]++;
+                processF(faces, line);
                 break;
             case obj_identifier::curv:
                 summary["curv"]++;
@@ -282,7 +407,8 @@ int main() {
 
     file.close();
 
-    showSummary(summary);
+    //showSummary(summary);
+    log(faces.size());
 
     return 0;
 }
