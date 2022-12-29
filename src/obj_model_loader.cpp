@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <map>
@@ -38,7 +39,7 @@ scrv    -> special curve
 sp      -> special point
 end     -> end statement
 
-## Connectivity between free-form surfaces
+## Connectivity between free-form surindices
 con     -> connect
 
 ## Grouping 
@@ -173,77 +174,15 @@ void log(std::vector<math::vec2> &vertices) {
     }
 }
 
-void log(std::vector<std::vector<int>> faces) {
-    for (int i = 0; i < faces.size(); i++) {
-        for (int j = 0; j < faces[i].size(); j++) {
-            std::cout << faces[i][j] << " ";
+void log(std::vector<std::vector<int>> indices) {
+    log("Printing indices");
+    log(indices.size());
+    for (int i = 0; i < indices.size(); i++) {
+        for (int j = 0; j < indices[i].size(); j++) {
+            std::cout << indices[i][j] << " ";
         }
         std::cout << std::endl;
     }
-}
-
-math::vec2 splitVec2(std::string line) {
-    math::vec2 vec;
-    std::string delimiter = " ";
-    std::string raw = line;
-    std::string token;
-    std::size_t pos = raw.find(delimiter);
-
-    token = raw.substr(0, pos);
-    raw.erase(0, pos + delimiter.length());
-
-    vec.x = std::stof(token);
-    vec.y = std::stof(raw);
-
-    return vec;
-}
-
-math::vec3 splitVec3(std::string line) {
-    math::vec3 vec;
-    std::string delimiter = " ";
-    std::string raw = line;
-    std::string token;
-    std::size_t pos = 0;
-    int count = 0;
-
-    while ((pos = raw.find(delimiter)) != std::string::npos) {
-        token = raw.substr(0, pos);
-        raw.erase(0, pos + delimiter.length());
-
-        if (count == 0)
-            vec.x = std::stof(token);
-        if (count == 1)
-            vec.y = std::stof(token);
-        count++;
-    }
-
-    vec.z = std::stof(raw);
-
-    return vec;
-}
-
-std::vector<int> splitFaces(std::string line) {
-    std::vector<int> vec;
-    std::string space_delimiter = " ";
-    std::string slash_delimiter = "/";
-    std::string raw = line;
-    std::string token;
-    std::string value;
-    std::size_t pos_outer = 0;
-    std::size_t pos_inner = 0;
-
-    while ((pos_outer = raw.find(space_delimiter)) != std::string::npos) {
-        token = raw.substr(0, pos_outer);
-        raw.erase(0, pos_outer + space_delimiter.length());
-
-        while ((pos_inner = token.find(slash_delimiter)) != std::string::npos) {
-            value = token.substr(0, pos_inner);
-            token.erase(0, pos_inner + slash_delimiter.length());
-            vec.push_back(std::stoi(value));
-        }
-    }
-
-    return vec;
 }
 
 void showSummary(std::map<std::string, int> summary) {
@@ -256,20 +195,56 @@ void showSummary(std::map<std::string, int> summary) {
     }
 }
 
-void processV(std::vector<math::vec3> &vertices, std::string line) { 
-    vertices.push_back(splitVec3(line.substr(2, line.length())));
+void processTripleValues(std::vector<math::vec3> &vec, std::string line) { 
+    std::string x, y, z;
+    std::istringstream iss(line);
+    std::string key;
+    iss >> key >> x >> y >> z;
+   
+    math::vec3 new_vec;
+    new_vec.x = std::stof(x);
+    new_vec.y = std::stof(y);
+    new_vec.z = std::stof(z);
+    
+    vec.push_back(new_vec);
 }
 
-void processVt(std::vector<math::vec2> &tex_coords, std::string line) { 
-    tex_coords.push_back(splitVec2(line.substr(3, line.length())));
+void processDoubleValues(std::vector<math::vec2> &vec, std::string line) { 
+    std::string x, y;
+    std::istringstream iss(line);
+    std::string key;
+    iss >> key >> x >> y;
+   
+    math::vec2 new_vec;
+    new_vec.x = std::stof(x);
+    new_vec.y = std::stof(y);
+
+    vec.push_back(new_vec);
 }
 
-void processVn(std::vector<math::vec3> &normals, std::string line) { 
-    normals.push_back(splitVec3(line.substr(3, line.length())));
-}
+void processIndices(std::vector<std::vector<int>> &indices, std::string line) {
+    line.erase(0, 2);
+    log(line.c_str());
+    std::istringstream iss(line);
+    std::string key;
+    std::string value;
+    std::vector<int> helper;
 
-void processF(std::vector<std::vector<int>> faces, std::string line) {
-    faces.push_back(splitFaces(line.substr(2, line.length())));
+    while (iss) {
+        iss >> value;
+        std::istringstream token(value);
+        log(value.c_str());
+        while(std::getline(token, key, '/')) {
+            if (key == "") {
+                //log("0");
+                break;
+            } else {
+                //log(key.c_str());
+                break;
+            }
+        }
+    }
+    indices.push_back(helper);
 }
 
 int main() {
@@ -278,29 +253,31 @@ int main() {
     const char *path = "./Box/Weapon box.obj";
     std::ifstream file (path);
     std::string line;
-    std::string delimiter = " ";
     std::map<std::string, int> summary;
 
     std::vector<math::vec3> vertices;
     std::vector<math::vec2> tex_coords;
     std::vector<math::vec3> normals;
-    std::vector<std::vector<int>> faces;
+    std::vector<std::vector<int>> indices;
 
     while (getline(file, line)) {
-        std::string identifier = line.substr(0, line.find(delimiter));
+        std::string identifier;
+
+        std::istringstream iss(line);
+        iss >> identifier;
 
         switch (handleInput(identifier)) {
             case obj_identifier::v:
                 summary["v"]++;
-                processV(vertices, line);
+                processTripleValues(vertices, line);
                 break;
             case obj_identifier::vt:
                 summary["vt"]++;
-                processVt(tex_coords, line);
+                processDoubleValues(tex_coords, line);
                 break;
             case obj_identifier::vn:
                 summary["vn"]++;
-                processVn(normals, line);
+                processTripleValues(normals, line);
                 break;
             case obj_identifier::vp:
                 summary["vp"]++;
@@ -325,7 +302,7 @@ int main() {
                 break;
             case obj_identifier::f:
                 summary["f"]++;
-                processF(faces, line);
+                processIndices(indices, line);
                 break;
             case obj_identifier::curv:
                 summary["curv"]++;
@@ -407,8 +384,9 @@ int main() {
 
     file.close();
 
+    //log(indices);
     //showSummary(summary);
-    log(faces.size());
+    //log(indices.size());
 
     return 0;
 }
