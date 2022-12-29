@@ -2,13 +2,24 @@
 
 Note: Order doesn't matter
 
+## Updates Implemented
+- Light Sources 
+    - Ambient
+    - Diffuse
+    - Specular
+- Textured/Untextured objects
+
 ## Next Updates 
 
 ### Ongoing
-- Light Sources 
-- Textured/Untextured objects
+- Light Casters
+    - Directional Light
+    - Point Light
+    - Spotlight
+- My own model loader
 
 ### Planning
+- Huge Refactoring
 - Custom objects
     - Dynamic vertex generation
     - Cube, Sphere, Plane, etc.
