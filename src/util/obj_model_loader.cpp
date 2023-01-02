@@ -160,6 +160,7 @@ void log(std::vector<int> vec) {
     for (int i = 0; i < vec.size(); i++) {
         std::cout << vec[i] << " ";
     }
+    std::cout << std::endl;
 }
 
 void log(std::vector<math::vec3> &vertices) {
@@ -175,8 +176,6 @@ void log(std::vector<math::vec2> &vertices) {
 }
 
 void log(std::vector<std::vector<int>> indices) {
-    log("Printing indices");
-    log(indices.size());
     for (int i = 0; i < indices.size(); i++) {
         for (int j = 0; j < indices[i].size(); j++) {
             std::cout << indices[i][j] << " ";
@@ -223,34 +222,35 @@ void processDoubleValues(std::vector<math::vec2> &vec, std::string line) {
 }
 
 void processIndices(std::vector<std::vector<int>> &indices, std::string line) {
-    line.erase(0, 2);
     log(line.c_str());
+    line.erase(0, 2);
     std::istringstream iss(line);
     std::string key;
     std::string value;
     std::vector<int> helper;
 
-    while (iss) {
-        iss >> value;
+    while (iss >> value) {
         std::istringstream token(value);
-        log(value.c_str());
         while(std::getline(token, key, '/')) {
             if (key == "") {
                 //log("0");
+                helper.push_back(0);
                 break;
             } else {
                 //log(key.c_str());
+                helper.push_back(std::stoi(key));
                 break;
             }
         }
     }
+    log(helper);
     indices.push_back(helper);
 }
 
 int main() {
 
     //const char *path = "./Intergalatic_Spaceship/Intergalactic_Spaceship.obj";
-    const char *path = "./Box/Weapon box.obj";
+    const char *path = "./Engel_C.obj";
     std::ifstream file (path);
     std::string line;
     std::map<std::string, int> summary;
@@ -385,7 +385,7 @@ int main() {
     file.close();
 
     //log(indices);
-    //showSummary(summary);
+    showSummary(summary);
     //log(indices.size());
 
     return 0;
