@@ -247,6 +247,7 @@ void processIndices(std::vector<std::vector<int>> &indices, std::string line) {
     indices.push_back(helper);
 }
 
+/*
 int main() {
 
     //const char *path = "./Intergalatic_Spaceship/Intergalactic_Spaceship.obj";
@@ -390,3 +391,4 @@ int main() {
 
     return 0;
 }
+*/

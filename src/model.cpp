@@ -49,6 +49,7 @@ Model::~Model() {
 }
 
 void Model::onUpdate(Settings *settings, Camera *TheCamera) {
+    // TODO this projection matrix shouldn't be defined here, fix that 
     transformations_matrices->projection = glm::perspective(TheCamera->Zoom, 
         (float)settings->resolution.x/(float)settings->resolution.y, 
         settings->near, settings->far);
