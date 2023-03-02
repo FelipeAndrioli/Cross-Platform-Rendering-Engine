@@ -4,20 +4,20 @@
 
 ### Colored Models
 
-![Colored Models](https://github.com/FelipeAndrioli/Cross-Platform-Rendering-Engine/colored_model.jpeg)
+<img src="./repository_images/colored_model.jpeg" alt="Colored Models">
 
 ### Textured Models
 
-![Textured Models](https://github.com/FelipeAndrioli/Cross-Platform-Rendering-Engine/textured_model.jpeg)
+<img src="./repository_images/textured_model.jpeg" alt="Textured Models">
 
 ### Textured Sponza
 
-![Textured Sponza](https://github.com/FelipeAndrioli/Cross-Platform-Rendering-Engine/textured_scene.jpeg)
+<img src="./repository_images/textured_scene.jpeg" alt="Textured Sponza">
 
 ### Basic Lighting
 
-![Basic Sponza](https://github.com/FelipeAndrioli/Cross-Platform-Rendering-Engine/basic_lighting.jpeg)
+<img src="./repository_images/basic_lighting.jpeg" alt="Basic Sponza">
 
 ### Multiple Light Sources
 
-![Multiple Light Sources](https://github.com/FelipeAndrioli/Cross-Platform-Rendering-Engine/multiple_light_sources.jpeg)
+<img src="./repository_images/multiple_light_sources.jpeg" alt="Multiple Light Sources">
