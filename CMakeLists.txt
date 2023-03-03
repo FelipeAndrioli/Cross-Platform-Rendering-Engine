@@ -37,14 +37,18 @@ target_link_libraries(${PROJECT_NAME} glm)
 
 # GLEW Setup
 # ----------
-add_definitions(-DGLEW_STATIC)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glew)
-target_link_libraries(${PROJECT_NAME} libglew_static)
+#add_definitions(-DGLEW_STATIC)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glew/build/cmake)
+#target_link_libraries(${PROJECT_NAME} libglew_static)
+
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+link_libraries(${GLEW_LIBRARIES})
 
 # Glad Setup
 # ----------
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glad)
-target_link_libraries(${PROJECT_NAME} glad)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glad/cmake)
+#target_link_libraries(${PROJECT_NAME} glad)
 
 # ASSIMP Setup
 # ------------
