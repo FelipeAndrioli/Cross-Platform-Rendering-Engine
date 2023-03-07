@@ -34,3 +34,9 @@ Note: Order doesn't matter
 - DirectX Support
 - Create own math lib
 - Create own model loading lib
+
+## Build
+
+### Assimp
+
+- The assimp build was failing due to some warnings, to fix it we need to set the variable ASSIMP_WARNINGS_AS_ERRORS as false
