@@ -28,7 +28,7 @@ void init() {
 }
 
 void tick() {
-    std::cout << "Ticking..." << std::endl;
+    std::cout << "Ticking...." << std::endl;
 }
 
 void update() {

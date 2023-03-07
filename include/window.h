@@ -7,7 +7,8 @@
 #include "../libs/imgui/imgui_impl_glfw.h"
 #include "../libs/imgui/imgui_impl_opengl3.h"
 
-#include "../libs/glad/build/include/glad/glad.h"
+//#include "../libs/glad/build/include/glad/glad.h"
+#include "../libs/glad/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 
 #include "../src/util/settings.h"

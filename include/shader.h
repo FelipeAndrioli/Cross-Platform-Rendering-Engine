@@ -10,7 +10,8 @@
 
 //#include <glm/glm.hpp>
 #include "../libs/glm/glm/glm.hpp"
-#include "../libs/glad/build/include/glad/glad.h"
+//#include "../libs/glad/build/include/glad/glad.h"
+#include "../libs/glad/include/glad/glad.h"
 
 /* Shader Class
  *

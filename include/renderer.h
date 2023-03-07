@@ -14,7 +14,8 @@
 #include "../src/util/mouse.h"
 #include "../src/util/color.h"
 
-#include "../libs/glad/build/include/glad/glad.h"
+//#include "../libs/glad/build/include/glad/glad.h"
+#include "../libs/glad/include/glad/glad.h"
 #include "../libs/glfw/include/GLFW/glfw3.h"
 #include "../libs/glm/glm/vec3.hpp"
 
