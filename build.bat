@@ -1,1 +1,1 @@
-cmake -S . -B build -G "MinGW Makefiles" -DBUILD_ASSIMP=OFF
+cmake -S . -B build -G "MinGW Makefiles" -DBUILD_ASSIMP=ON

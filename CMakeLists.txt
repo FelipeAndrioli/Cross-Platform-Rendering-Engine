@@ -11,12 +11,14 @@ file(GLOB_RECURSE SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/glad/src/*.c
 )
 
 file(GLOB_RECURSE HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/glad/include/glad/*.h
 )
 
 add_executable(
